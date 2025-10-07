@@ -872,9 +872,9 @@ public abstract class Minecraft implements Runnable {
                                 float delta = var3 / 200.0F; // sensitivity
                                 this.entityRenderer.fovScrollOffset += delta;
 
-                                // Limit speed of change
+                                // Limit Range
                                 if (this.entityRenderer.fovScrollOffset > 50.0F) this.entityRenderer.fovScrollOffset = 50.0F;
-                                if (this.entityRenderer.fovScrollOffset < -30.0F) this.entityRenderer.fovScrollOffset = -30.0F;
+                                if (this.entityRenderer.fovScrollOffset < -55.0F) this.entityRenderer.fovScrollOffset = -55.0F;
                             } else {
                                 // Not holding control, scroll thru items instead
                                 this.thePlayer.inventory.changeCurrentItem(var3);
@@ -1054,6 +1054,7 @@ public abstract class Minecraft implements Runnable {
 		this.theWorld.dropOldChunks();
 	}
 
+
 	public void installResource(String var1, File var2) {
 		int var3 = var1.indexOf("/");
 		String var4 = var1.substring(0, var3);
@@ -1063,7 +1064,17 @@ public abstract class Minecraft implements Runnable {
 		} else if(var4.equalsIgnoreCase("newsound")) {
 			this.sndManager.addSound(var1, var2);
 		} else if(var4.equalsIgnoreCase("streaming")) {
+            // Override in favor of custom music
+            if (var1.equalsIgnoreCase("13.ogg")) {
+                System.out.println("Loading from: " + new File("resources/streaming/custom/13.ogg").getAbsolutePath());
+                var2 = new File("resources/streaming/custom/13.ogg");
+            } else if (var1.equalsIgnoreCase("cat.ogg")) {
+                System.out.println("Loading from: " + new File("resources/streaming/custom/cat.ogg").getAbsolutePath());
+                var2 = new File("resources/streaming/custom/cat.ogg");
+            }
+
 			this.sndManager.addStreaming(var1, var2);
+
 		} else if(var4.equalsIgnoreCase("music")) {
 			this.sndManager.addMusic(var1, var2);
 		} else if(var4.equalsIgnoreCase("newmusic")) {

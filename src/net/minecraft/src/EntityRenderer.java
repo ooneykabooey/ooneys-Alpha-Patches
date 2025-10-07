@@ -169,6 +169,9 @@ public class EntityRenderer {
             float var11 = var2.rotationYaw;
             float var12 = var2.rotationPitch;
 
+            // Accounting for collision
+            double dir = this.mc.options.thirdPersonFront ? -1.0D : 1.0D;
+
             boolean front = this.mc.options.thirdPersonFront;
 
             // For front view, invert distance and rotate yaw
@@ -190,7 +193,9 @@ public class EntityRenderer {
 
                 MovingObjectPosition var23 = this.mc.theWorld.rayTraceBlocks(
                         Vec3D.createVector(var3 + var20, var5 + var21, var7 + var22),
-                        Vec3D.createVector(var3 - var13 + var20 + var22, var5 - var17 + var21, var7 - var15 + var22)
+                        Vec3D.createVector(var3 - var13 * dir + var20 + var22,
+                                            var5 - var17 + var21,
+                                            var7 - var15 * dir + var22)
                 );
 
                 if (var23 != null) {
