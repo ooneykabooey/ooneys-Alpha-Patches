@@ -875,7 +875,7 @@ public abstract class Minecraft implements Runnable {
 
 
 													if (this.options.thirdPersonView) {
-                                                        if (this.options.thirdPersonFront) { // Test 2
+                                                        if (this.options.thirdPersonFront) { // Test 3
                                                             this.options.thirdPersonView = false;
                                                             this.options.thirdPersonFront = false;
                                                         } else {
