@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -12,6 +13,7 @@ import org.lwjgl.opengl.NVFogDistance;
 import org.lwjgl.util.glu.GLU;
 
 public class EntityRenderer {
+    public float fovScrollOffset = 0.0F;
 	private Minecraft mc;
 	private float farPlaneDistance = 0.0F;
 	public ItemRenderer itemRenderer;
@@ -96,9 +98,10 @@ public class EntityRenderer {
 		}
 	}
 
-	private float getFOVModifier(float var1) {
+	public float getFOVModifier(float var1) {
 		EntityPlayerSP var2 = this.mc.thePlayer;
 		float var3 = 70.0F;
+
 		if(var2.isInsideOfMaterial(Material.water)) {
 			var3 = 60.0F;
 		}
@@ -108,8 +111,18 @@ public class EntityRenderer {
 			var3 /= (1.0F - 500.0F / (var4 + 500.0F)) * 2.0F + 1.0F;
 		}
 
+        // Apply fovoffset from scroll wheel
+        var3 += fovScrollOffset;
+
+        // FOV Range
+        if (var3 < 15.0F) var3 = 15.0F;
+        if (var3 > 120.0F) var3 = 120.0F;
+
 		return var3;
 	}
+
+
+
 
 	private void hurtCameraEffect(float var1) {
 		EntityPlayerSP var2 = this.mc.thePlayer;

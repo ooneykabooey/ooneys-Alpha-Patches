@@ -8,61 +8,8 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.io.File;
-import net.minecraft.src.AxisAlignedBB;
-import net.minecraft.src.Block;
-import net.minecraft.src.EffectRenderer;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.EntityRenderer;
-import net.minecraft.src.EnumOS;
-import net.minecraft.src.FontRenderer;
-import net.minecraft.src.GLAllocation;
-import net.minecraft.src.GameSettings;
-import net.minecraft.src.GameWindowListener;
-import net.minecraft.src.GuiChat;
-import net.minecraft.src.GuiConflictWarning;
-import net.minecraft.src.GuiConnecting;
-import net.minecraft.src.GuiErrorScreen;
-import net.minecraft.src.GuiGameOver;
-import net.minecraft.src.GuiIngame;
-import net.minecraft.src.GuiIngameMenu;
-import net.minecraft.src.GuiInventory;
-import net.minecraft.src.GuiMainMenu;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.ItemRenderer;
-import net.minecraft.src.ItemStack;
-import net.minecraft.src.LoadingScreenRenderer;
-import net.minecraft.src.MathHelper;
-import net.minecraft.src.MinecraftError;
-import net.minecraft.src.MinecraftException;
-import net.minecraft.src.MinecraftImpl;
-import net.minecraft.src.ModelBiped;
-import net.minecraft.src.MouseHelper;
-import net.minecraft.src.MovementInputFromOptions;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.OSMap;
-import net.minecraft.src.OpenGlCapsChecker;
-import net.minecraft.src.PlayerController;
-import net.minecraft.src.PlayerControllerCreative;
-import net.minecraft.src.RenderEngine;
-import net.minecraft.src.RenderGlobal;
-import net.minecraft.src.RenderManager;
-import net.minecraft.src.ScaledResolution;
-import net.minecraft.src.Session;
-import net.minecraft.src.SoundManager;
-import net.minecraft.src.Tessellator;
-import net.minecraft.src.TextureCompassFX;
-import net.minecraft.src.TextureFlamesFX;
-import net.minecraft.src.TextureLavaFX;
-import net.minecraft.src.TextureLavaFlowFX;
-import net.minecraft.src.TextureWaterFX;
-import net.minecraft.src.TextureWaterFlowFX;
-import net.minecraft.src.ThreadDownloadResources;
-import net.minecraft.src.ThreadSleepForever;
-import net.minecraft.src.Timer;
-import net.minecraft.src.UnexpectedThrowable;
-import net.minecraft.src.Vec3D;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldRenderer;
+
+import net.minecraft.src.*;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Controllers;
 import org.lwjgl.input.Keyboard;
@@ -125,6 +72,7 @@ public abstract class Minecraft implements Runnable {
 	public boolean isRaining = false;
 	long systemTime = System.currentTimeMillis();
 	private int joinPlayerCounter = 0;
+    boolean isTakingScreenshot = false;
 
 	public Minecraft(Component var1, Canvas var2, MinecraftApplet var3, int var4, int var5, boolean var6) {
 		this.tempDisplayWidth = var4;
@@ -480,6 +428,7 @@ public abstract class Minecraft implements Runnable {
 
 					Thread.yield();
 					Display.update();
+                    this.screenshotListener();
 					if(this.mcCanvas != null && !this.fullscreen && (this.mcCanvas.getWidth() != this.displayWidth || this.mcCanvas.getHeight() != this.displayHeight)) {
 						this.displayWidth = this.mcCanvas.getWidth();
 						this.displayHeight = this.mcCanvas.getHeight();
@@ -919,8 +868,19 @@ public abstract class Minecraft implements Runnable {
 
 						int var3 = Mouse.getEventDWheel();
 						if(var3 != 0) {
-							this.thePlayer.inventory.changeCurrentItem(var3);
-						}
+                            if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {// CTRL is held, adjust FOV instead of scrolling
+                                float delta = var3 / 200.0F; // sensitivity
+                                this.entityRenderer.fovScrollOffset += delta;
+
+                                // Limit speed of change
+                                if (this.entityRenderer.fovScrollOffset > 50.0F) this.entityRenderer.fovScrollOffset = 50.0F;
+                                if (this.entityRenderer.fovScrollOffset < -30.0F) this.entityRenderer.fovScrollOffset = -30.0F;
+                            } else {
+                                // Not holding control, scroll thru items instead
+                                this.thePlayer.inventory.changeCurrentItem(var3);
+
+                            }
+                        }
 
 						if(this.currentScreen == null) {
 							if(!this.inGameHasFocus && Mouse.getEventButtonState()) {
@@ -1177,6 +1137,8 @@ public abstract class Minecraft implements Runnable {
 		var8.start();
 	}
 
+
+
 	public static void main(String[] var0) {
 		String var1 = "Player" + System.currentTimeMillis() % 1000L;
 		if(var0.length > 0) {
@@ -1190,4 +1152,16 @@ public abstract class Minecraft implements Runnable {
 
 		startMainThread(var1, var2);
 	}
+
+    private void screenshotListener() {
+        if(Keyboard.isKeyDown(Keyboard.KEY_F2)) {
+            if(!this.isTakingScreenshot) {
+                this.isTakingScreenshot = true;
+                this.ingameGUI.addChatMessage(ScreenShotHelper.saveScreenshot(minecraftDir, this.displayWidth, this.displayHeight));
+            }
+        } else {
+            this.isTakingScreenshot = false;
+        }
+
+    }
 }
