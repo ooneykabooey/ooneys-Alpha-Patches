@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import net.minecraft.client.Minecraft;
@@ -81,36 +83,45 @@ public class ThreadDownloadResources extends Thread {
 
 	}
 
-	private void downloadAndInstallResource(URL var1, String var2, long var3, int var5) {
-		try {
-			int var6 = var2.indexOf("/");
-			String var7 = var2.substring(0, var6);
-			if(!var7.equals("sound") && !var7.equals("newsound")) {
-				if(var5 != 1) {
-					return;
-				}
-			} else if(var5 != 0) {
-				return;
-			}
 
-			File var8 = new File(this.resourcesFolder, var2);
-			if(!var8.exists() || var8.length() != var3) {
-				var8.getParentFile().mkdirs();
-				String var9 = var2.replaceAll(" ", "%20");
-				this.downloadResource(new URL(var1, var9), var8, var3);
-				if(this.closing) {
-					return;
-				}
-			}
+    private Set<String> loadedStreaming = new HashSet<>();
 
-			this.mc.installResource(var2, var8);
-		} catch (Exception var10) {
-			var10.printStackTrace();
-		}
+    private void downloadAndInstallResource(URL baseURL, String resourcePath, long size, int stage) {
+        try {
+            File localFile = new File(this.resourcesFolder, resourcePath);
 
-	}
+            // Skip download if local exists
+            if (localFile.exists()) {
+                if (!loadedStreaming.contains(resourcePath)) {
+                    this.mc.installResource(resourcePath, localFile);
+                    loadedStreaming.add(resourcePath);
+                }
+                return;
+            }
 
-	private void downloadResource(URL var1, File var2, long var3) throws IOException {
+            int slashIndex = resourcePath.indexOf("/");
+            String prefix = resourcePath.substring(0, slashIndex);
+            if (!prefix.equals("sound") && !prefix.equals("newsound")) {
+                if (stage != 1) return;
+            } else if (stage != 0) {
+                return;
+            }
+
+            localFile.getParentFile().mkdirs();
+            String urlPath = resourcePath.replaceAll(" ", "%20");
+            this.downloadResource(new URL(baseURL, urlPath), localFile, size);
+
+            if (!loadedStreaming.contains(resourcePath)) {
+                this.mc.installResource(resourcePath, localFile);
+                loadedStreaming.add(resourcePath);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void downloadResource(URL var1, File var2, long var3) throws IOException {
 		byte[] var5 = new byte[4096];
 		DataInputStream var6 = new DataInputStream(var1.openStream());
 		DataOutputStream var7 = new DataOutputStream(new FileOutputStream(var2));

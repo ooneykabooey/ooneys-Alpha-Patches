@@ -1055,35 +1055,34 @@ public abstract class Minecraft implements Runnable {
 	}
 
 
-	public void installResource(String var1, File var2) {
-		int var3 = var1.indexOf("/");
-		String var4 = var1.substring(0, var3);
-		var1 = var1.substring(var3 + 1);
-		if(var4.equalsIgnoreCase("sound")) {
-			this.sndManager.addSound(var1, var2);
-		} else if(var4.equalsIgnoreCase("newsound")) {
-			this.sndManager.addSound(var1, var2);
-		} else if(var4.equalsIgnoreCase("streaming")) {
-            // Override in favor of custom music
-            if (var1.equalsIgnoreCase("13.ogg")) {
-                System.out.println("Loading from: " + new File("resources/streaming/custom/13.ogg").getAbsolutePath());
-                var2 = new File("resources/streaming/custom/13.ogg");
-            } else if (var1.equalsIgnoreCase("cat.ogg")) {
-                System.out.println("Loading from: " + new File("resources/streaming/custom/cat.ogg").getAbsolutePath());
-                var2 = new File("resources/streaming/custom/cat.ogg");
+    public void installResource(String var1, File var2) {
+        int var3 = var1.indexOf("/");
+        String var4 = var1.substring(0, var3);
+        var1 = var1.substring(var3 + 1);
+
+        // Handle special streaming records (.ogg)
+        if (var4.equalsIgnoreCase("streaming") &&
+                (var1.equalsIgnoreCase("13.ogg") || var1.equalsIgnoreCase("cat.ogg"))) {
+            this.sndManager.stopStreaming();  // stop any currently playing source
+            if (!this.sndManager.isStreamingSoundLoaded(var1)) {
+                this.sndManager.addStreaming(var1, var2);
             }
+            return;
+        }
 
-			this.sndManager.addStreaming(var1, var2);
+        if (var4.equalsIgnoreCase("sound") || var4.equalsIgnoreCase("newsound")) {
+            this.sndManager.addSound(var1, var2);
+        } else if (var4.equalsIgnoreCase("streaming")) {
+            if (!this.sndManager.isStreamingSoundLoaded(var1)) {
+                this.sndManager.addStreaming(var1, var2);
+            }
+        } else if (var4.equalsIgnoreCase("music") || var4.equalsIgnoreCase("newmusic")) {
+            this.sndManager.addMusic(var1, var2);
+        }
+    }
 
-		} else if(var4.equalsIgnoreCase("music")) {
-			this.sndManager.addMusic(var1, var2);
-		} else if(var4.equalsIgnoreCase("newmusic")) {
-			this.sndManager.addMusic(var1, var2);
-		}
 
-	}
-
-	public OpenGlCapsChecker getOpenGlCapsChecker() {
+    public OpenGlCapsChecker getOpenGlCapsChecker() {
 		return this.glCapabilities;
 	}
 

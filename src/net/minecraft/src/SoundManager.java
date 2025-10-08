@@ -1,7 +1,11 @@
 package net.minecraft.src;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.codecs.CodecJOrbis;
@@ -9,6 +13,7 @@ import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
 
 public class SoundManager {
+    private Set<String> loadedStreamingSounds = new HashSet<>();
 	private static SoundSystem sndSystem;
 	private SoundPool soundPoolSounds = new SoundPool();
 	private SoundPool soundPoolStreaming = new SoundPool();
@@ -75,11 +80,16 @@ public class SoundManager {
 		this.soundPoolSounds.addSound(var1, var2);
 	}
 
-	public void addStreaming(String var1, File var2) {
-		this.soundPoolStreaming.addSound(var1, var2);
-	}
 
-	public void addMusic(String var1, File var2) {
+
+
+    public void addStreaming(String name, File file) {
+        if (!name.toLowerCase().endsWith(".ogg")) return;  // ignore non-ogg files
+        this.soundPoolStreaming.addSound(name, file);
+    }
+
+
+    public void addMusic(String var1, File var2) {
 		this.soundPoolMusic.addSound(var1, var2);
 	}
 
@@ -191,4 +201,50 @@ public class SoundManager {
 
 		}
 	}
+
+    public void stopStreaming() {
+        try {
+            if (this.sndSystem != null && this.sndSystem.playing("streaming")) {
+                this.sndSystem.stop("streaming");
+                this.sndSystem.removeSource("streaming");
+            }
+        } catch (Exception e) {
+            System.out.println("Warning: could not stop streaming source");
+        }
+    }
+
+    public void stopStreaming(String streamId) {
+        try {
+            // Access private sndSystem via reflection if needed
+            java.lang.reflect.Field sndField = SoundManager.class.getDeclaredField("sndSystem");
+            sndField.setAccessible(true);
+            paulscode.sound.SoundSystem sndSystem = (paulscode.sound.SoundSystem) sndField.get(this);
+
+            if(sndSystem != null && sndSystem.playing(streamId)) {
+                sndSystem.stop(streamId);
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to stop streaming " + streamId + ": " + e);
+        }
+    }
+
+
+    public void addStreamingSafe(String name, File file) {
+        if (!loadedStreamingSounds.contains(name)) {
+            this.addStreaming(name, file);
+            loadedStreamingSounds.add(name);
+        }
+    }
+
+    public boolean isStreamingSoundLoaded(String name) {
+        if (this.soundPoolStreaming == null) return false;
+
+        for (Object o : this.soundPoolStreaming.getAllSoundPoolEntries()) {
+            SoundPoolEntry entry = (SoundPoolEntry) o;
+            if (entry.soundName.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -38,21 +38,21 @@ public class ThreadDownloadResources extends Thread {
 			NodeList var5 = var4.getElementsByTagName("Contents");
 
 			for(int var6 = 0; var6 < 2; ++var6) {
-				for(int var7 = 0; var7 < var5.getLength(); ++var7) {
-					Node var8 = var5.item(var7);
-					if(var8.getNodeType() == 1) {
-						Element var9 = (Element)var8;
-						String var10 = ((Element)var9.getElementsByTagName("Key").item(0)).getChildNodes().item(0).getNodeValue();
-						long var11 = Long.parseLong(((Element)var9.getElementsByTagName("Size").item(0)).getChildNodes().item(0).getNodeValue());
-						if(var11 > 0L) {
-							this.downloadAndInstallResource(var1, var10, var11, var6);
-							if(this.closing) {
-								return;
-							}
-						}
-					}
-				}
-			}
+                for (int var7 = 0; var7 < var5.getLength(); ++var7) {
+                    Node var8 = var5.item(var7);
+                    if (var8.getNodeType() == 1) {
+                        Element var9 = (Element) var8;
+                        String var10 = ((Element) var9.getElementsByTagName("Key").item(0)).getChildNodes().item(0).getNodeValue();
+                        long var11 = Long.parseLong(((Element) var9.getElementsByTagName("Size").item(0)).getChildNodes().item(0).getNodeValue());
+                        if (var11 > 0L) {
+                            this.downloadAndInstallResource(var1, var10, var11, var6);
+                            if (this.closing) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
 		} catch (Exception var13) {
 			this.loadResource(this.resourcesFolder, "");
 			var13.printStackTrace();
