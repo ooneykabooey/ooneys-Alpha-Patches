@@ -50,6 +50,8 @@ public class World implements IBlockAccess {
 	public final String levelName;
 	public boolean worldChunkLoadOverride;
 	private ArrayList collidingBoundingBoxes;
+    private int lightingUpdatesCounter;
+    static int lightingUpdatesScheduled = 0;
 	private Set positionsToUpdate;
 	private int soundCounter;
 	private List entitiesWithinAABBExcludingEntity;
@@ -125,6 +127,7 @@ public class World implements IBlockAccess {
 		this.randomSeed = 0L;
 		this.sizeOnDisk = 0L;
 		this.collidingBoundingBoxes = new ArrayList();
+        this.lightingUpdatesCounter = 0;
 		this.positionsToUpdate = new HashSet();
 		this.soundCounter = this.rand.nextInt(12000);
 		this.entitiesWithinAABBExcludingEntity = new ArrayList();
@@ -159,6 +162,7 @@ public class World implements IBlockAccess {
 		this.randomSeed = 0L;
 		this.sizeOnDisk = 0L;
 		this.collidingBoundingBoxes = new ArrayList();
+        this.lightingUpdatesCounter = 0;
 		this.positionsToUpdate = new HashSet();
 		this.soundCounter = this.rand.nextInt(12000);
 		this.entitiesWithinAABBExcludingEntity = new ArrayList();
@@ -354,6 +358,11 @@ public class World implements IBlockAccess {
 	public boolean blockExists(int var1, int var2, int var3) {
 		return var2 >= 0 && var2 < 128 ? this.chunkExists(var1 >> 4, var3 >> 4) : false;
 	}
+
+    // Compatibility
+    public boolean doChunksNearChunkExist(int i1, int i2, int i3, int i4) {
+        return this.checkChunksExist(i1 - i4, i2 - i4, i3 - i4, i1 + i4, i2 + i4, i3 + i4);
+    }
 
 	public boolean checkChunksExist(int var1, int var2, int var3, int var4, int var5, int var6) {
 		if(var5 >= 0 && var2 < 128) {
@@ -1463,18 +1472,31 @@ public class World implements IBlockAccess {
 	}
 
 	public boolean updatingLighting() {
-		int var1 = 1000;
+		if (this.lightingUpdatesCounter >= 50) {
+            return false;
+        } else {
+            ++this.lightingUpdatesCounter;
 
-		while(this.lightingToUpdate.size() > 0) {
-			--var1;
-			if(var1 <= 0) {
-				return true;
-			}
+            try {
 
-			((MetadataChunkBlock)this.lightingToUpdate.remove(this.lightingToUpdate.size() - 1)).updateLight(this);
-		}
+                int var1 = 500;
 
-		return false;
+                while(this.lightingToUpdate.size() > 0) {
+                    --var1;
+                    if(var1 <= 0) {
+                        return true;
+                    }
+
+                    ((MetadataChunkBlock)this.lightingToUpdate.remove(this.lightingToUpdate.size() - 1)).updateLight(this);
+                }
+                return false;
+
+            } finally {
+                --this.lightingUpdatesCounter;
+            }
+        }
+
+
 	}
 
 	public void scheduleLightingUpdate(EnumSkyBlock var1, int var2, int var3, int var4, int var5, int var6, int var7) {
@@ -1482,32 +1504,40 @@ public class World implements IBlockAccess {
 	}
 
 	public void scheduleLightingUpdate_do(EnumSkyBlock var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8) {
-		int var9 = (var5 + var2) / 2;
-		int var10 = (var7 + var4) / 2;
-		if(this.blockExists(var9, 64, var10)) {
-			int var11 = this.lightingToUpdate.size();
-			if(var8) {
-				int var12 = 4;
-				if(var12 > var11) {
-					var12 = var11;
-				}
+		++lightingUpdatesScheduled;
 
-				for(int var13 = 0; var13 < var12; ++var13) {
-					MetadataChunkBlock var14 = (MetadataChunkBlock)this.lightingToUpdate.get(this.lightingToUpdate.size() - var13 - 1);
-					if(var14.skyBlock == var1 && var14.getLightUpdated(var2, var3, var4, var5, var6, var7)) {
-						return;
-					}
-				}
-			}
+        try {
+            if (lightingUpdatesScheduled != 50) {
+                int var9 = (var5 + var2) / 2;
+                int var10 = (var7 + var4) / 2;
+                if(this.blockExists(var9, 64, var10)) {
+                    int var11 = this.lightingToUpdate.size();
+                    if(var8) {
+                        int var12 = 4;
+                        if(var12 > var11) {
+                            var12 = var11;
+                        }
 
-			this.lightingToUpdate.add(new MetadataChunkBlock(var1, var2, var3, var4, var5, var6, var7));
-			if(this.lightingToUpdate.size() > 100000) {
-				while(this.lightingToUpdate.size() > '\uc350') {
-					this.updatingLighting();
-				}
-			}
+                        for(int var13 = 0; var13 < var12; ++var13) {
+                            MetadataChunkBlock var14 = (MetadataChunkBlock)this.lightingToUpdate.get(this.lightingToUpdate.size() - var13 - 1);
+                            if(var14.skyBlock == var1 && var14.getLightUpdated(var2, var3, var4, var5, var6, var7)) {
+                                return;
+                            }
+                        }
+                    }
 
-		}
+                    this.lightingToUpdate.add(new MetadataChunkBlock(var1, var2, var3, var4, var5, var6, var7));
+                    if(this.lightingToUpdate.size() > 100000) {
+                        System.out.println("More than 1000000 updates, aborting lighting updates");
+                        this.lightingToUpdate.clear();
+                    }
+
+                }
+            }
+        } finally {
+            --lightingUpdatesScheduled;
+        }
+
 	}
 
 	public void calculateInitialSkylight() {
