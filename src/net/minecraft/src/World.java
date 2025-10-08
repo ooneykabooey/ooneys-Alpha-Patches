@@ -838,9 +838,9 @@ public class World implements IBlockAccess {
 
 	}
 
-	public void playRecord(String var1, int var2, int var3, int var4) {
+	public void playRecord(String var1, int var2, int var3, int var4, String overlayText) {
 		for(int var5 = 0; var5 < this.worldAccesses.size(); ++var5) {
-			((IWorldAccess)this.worldAccesses.get(var5)).playRecord(var1, var2, var3, var4);
+			((IWorldAccess)this.worldAccesses.get(var5)).playRecord(var1, var2, var3, var4, overlayText);
 		}
 
 	}

@@ -1031,9 +1031,15 @@ public class RenderGlobal implements IWorldAccess {
 		++this.frustumCheckOffset;
 	}
 
-	public void playRecord(String var1, int var2, int var3, int var4) {
+	public void playRecord(String var1, int var2, int var3, int var4, String overlayText) {
 		if(var1 != null) {
-			this.mc.ingameGUI.setRecordPlayingMessage("C418 - " + var1);
+            if (overlayText != null) {
+                if (overlayText.equals("13") || overlayText.equals("cat")) {
+                    this.mc.ingameGUI.setRecordPlayingMessage("C418 - " + var1);
+                } else {
+                    this.mc.ingameGUI.setRecordPlayingMessage(overlayText);
+                }
+            }
 		}
 
 		this.mc.sndManager.playStreaming(var1, (float)var2, (float)var3, (float)var4, 1.0F, 1.0F);

@@ -9,14 +9,18 @@ public class ItemRecord extends Item {
 		this.maxStackSize = 1;
 	}
 
-	public boolean onItemUse(ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
-		if(var3.getBlockId(var4, var5, var6) == Block.jukebox.blockID && var3.getBlockMetadata(var4, var5, var6) == 0) {
-			var3.setBlockMetadataWithNotify(var4, var5, var6, this.shiftedIndex - Item.record13.shiftedIndex + 1);
-			var3.playRecord(this.recordName, var4, var5, var6);
-			--var1.stackSize;
-			return true;
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
+        if (world.getBlockId(x, y, z) == Block.jukebox.blockID && world.getBlockMetadata(x, y, z) == 0) {
+            // Insert the record into the jukebox
+            BlockJukeBox jukebox = (BlockJukeBox) Block.blocksList[Block.jukebox.blockID];
+            jukebox.insertRecord(world, x, y, z, this.recordName);
+
+            // Consume the record
+            --stack.stackSize;
+            return true;
+        }
+        return false;
+    }
+
 }

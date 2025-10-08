@@ -19,7 +19,7 @@ public class EntitySheep extends EntityAnimal {
 				var5.motionY += (double)(this.rand.nextFloat() * 0.05F);
 				var5.motionX += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
 				var5.motionZ += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
-			}
+            }
 		}
 
 		return super.attackEntityFrom(var1, var2);
