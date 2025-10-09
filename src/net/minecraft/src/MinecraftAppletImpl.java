@@ -1,10 +1,9 @@
 package net.minecraft.src;
 
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Component;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MinecraftApplet;
+
+import java.awt.*;
 
 public class MinecraftAppletImpl extends Minecraft {
 	final MinecraftApplet mainFrame;

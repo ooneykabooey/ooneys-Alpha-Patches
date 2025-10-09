@@ -1,11 +1,11 @@
 package net.minecraft.client;
 
-import java.applet.Applet;
-import java.awt.BorderLayout;
-import java.awt.Canvas;
 import net.minecraft.src.CanvasMinecraftApplet;
 import net.minecraft.src.MinecraftAppletImpl;
 import net.minecraft.src.Session;
+
+import java.applet.Applet;
+import java.awt.*;
 
 public class MinecraftApplet extends Applet {
 	private Canvas mcCanvas;

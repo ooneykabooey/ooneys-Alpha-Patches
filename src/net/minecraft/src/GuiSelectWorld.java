@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import java.io.File;
 import net.minecraft.client.Minecraft;
+
+import java.io.File;
 
 public class GuiSelectWorld extends GuiScreen {
 	protected GuiScreen parentScreen;

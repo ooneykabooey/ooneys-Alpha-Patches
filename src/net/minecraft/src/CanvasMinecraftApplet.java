@@ -1,7 +1,8 @@
 package net.minecraft.src;
 
-import java.awt.Canvas;
 import net.minecraft.client.MinecraftApplet;
+
+import java.awt.*;
 
 public class CanvasMinecraftApplet extends Canvas {
 	final MinecraftApplet mcApplet;

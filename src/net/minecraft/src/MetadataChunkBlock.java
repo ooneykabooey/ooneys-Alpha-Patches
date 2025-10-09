@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import org.lwjgl.Sys;
-
 public class MetadataChunkBlock {
 	public final EnumSkyBlock skyBlock;
 	public int minX;

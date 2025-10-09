@@ -1,16 +1,15 @@
 package net.minecraft.src;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class SoundManager {
     private Set<String> loadedStreamingSounds = new HashSet<>();
@@ -218,7 +217,7 @@ public class SoundManager {
             // Access private sndSystem via reflection if needed
             java.lang.reflect.Field sndField = SoundManager.class.getDeclaredField("sndSystem");
             sndField.setAccessible(true);
-            paulscode.sound.SoundSystem sndSystem = (paulscode.sound.SoundSystem) sndField.get(this);
+            SoundSystem sndSystem = (SoundSystem) sndField.get(this);
 
             if(sndSystem != null && sndSystem.playing(streamId)) {
                 sndSystem.stop(streamId);

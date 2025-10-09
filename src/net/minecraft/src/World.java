@@ -1,18 +1,7 @@
 package net.minecraft.src;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
+import java.io.*;
+import java.util.*;
 
 public class World implements IBlockAccess {
 	private List lightingToUpdate;
@@ -1514,7 +1503,7 @@ public class World implements IBlockAccess {
                     return;
                 }
 
-                Chunk var11 = this.getChunkFromChunkCoords(var9, var10);
+                Chunk var11 = this.getChunkFromBlockCoords(var9, var10);
                 if (var11.isChunkRendered || var3 >= 128 && var11.blocks2 == null) {
                     return;
                 }

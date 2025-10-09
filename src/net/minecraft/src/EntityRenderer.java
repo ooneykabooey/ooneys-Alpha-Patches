@@ -1,16 +1,16 @@
 package net.minecraft.src;
 
-import java.nio.FloatBuffer;
-import java.util.List;
-import java.util.Random;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.NVFogDistance;
 import org.lwjgl.util.glu.GLU;
+
+import java.nio.FloatBuffer;
+import java.util.List;
+import java.util.Random;
 
 public class EntityRenderer {
     public float fovScrollOffset = 0.0F;
