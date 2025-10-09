@@ -329,7 +329,7 @@ public class EntityRenderer {
 			}
 
 			if(this.mc.currentScreen != null) {
-				GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+				GL11.glClear(256);
 				this.mc.currentScreen.drawScreen(var10, var11, var1);
 			}
 
@@ -436,7 +436,7 @@ public class EntityRenderer {
 			var3.renderClouds(var1);
 			GL11.glDisable(GL11.GL_FOG);
 			this.setupFog(1);
-			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+			GL11.glClear(256);
 			this.renderHand(var1, var11);
 			if(!this.mc.options.anaglyph) {
 				return;
@@ -545,7 +545,7 @@ public class EntityRenderer {
 		ScaledResolution var1 = new ScaledResolution(this.mc.displayWidth, this.mc.displayHeight);
 		int var2 = var1.getScaledWidth();
 		int var3 = var1.getScaledHeight();
-		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClear(256);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		GL11.glOrtho(0.0D, (double)var2, (double)var3, 0.0D, 1000.0D, 3000.0D);
