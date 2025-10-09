@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/// az.class
 public class SpawnerAnimals {
 	private int maxSpawns;
 	private Class entityType;
@@ -27,10 +28,11 @@ public class SpawnerAnimals {
 	}
 
 	protected ChunkPosition getRandomSpawningPointInChunk(World var1, int var2, int var3) {
-		int var4 = var2 + var1.rand.nextInt(16);
-		int var5 = var1.rand.nextInt(128);
-		int var6 = var3 + var1.rand.nextInt(16);
-		return new ChunkPosition(var4, var5, var6);
+        Chunk var4 = var1.getChunkFromChunkCoords(var2, var3);
+        int var5 = var2 * 16 + var1.rand.nextInt(16);
+        int var6 = var3 * 16 + var1.rand.nextInt(16); /// SEE ABOUT
+        int var7 = var1.rand.nextInt(var4 == null ? 256 : (var4.blocks2 == null ? 127 : 255));
+		return new ChunkPosition(var5, var7, var6);
 	}
 
 	private int performSpawning(World var1, int var2, IProgressUpdate var3) {
@@ -67,7 +69,7 @@ public class SpawnerAnimals {
 			} while(var1.rand.nextInt(10) != 0);
 
 			var7 = var1.rand.nextInt(this.entities.length);
-			ChunkPosition var28 = this.getRandomSpawningPointInChunk(var1, var27.chunkXPos * 16, var27.chunkZPos * 16);
+			ChunkPosition var28 = this.getRandomSpawningPointInChunk(var1, var27.chunkXPos, var27.chunkZPos);
 			var9 = var28.x;
 			var10 = var28.y;
 			int var11 = var28.z;

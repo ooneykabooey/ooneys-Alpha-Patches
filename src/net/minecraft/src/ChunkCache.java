@@ -1,31 +1,55 @@
 package net.minecraft.src;
 
+
+/// ci.class
 public class ChunkCache implements IBlockAccess {
 	private int chunkX;
 	private int chunkZ;
 	private Chunk[][] chunkArray;
+    private boolean isEmpty;
 	private World worldObj;
 
-	public ChunkCache(World var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-		this.worldObj = var1;
-		this.chunkX = var2 >> 4;
-		this.chunkZ = var4 >> 4;
-		int var8 = var5 >> 4;
-		int var9 = var7 >> 4;
-		this.chunkArray = new Chunk[var8 - this.chunkX + 1][var9 - this.chunkZ + 1];
+    public ChunkCache(World var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+        this(var1, var2, var3, var4, var5, var6, var7, 0);
+    }
 
-		for(int var10 = this.chunkX; var10 <= var8; ++var10) {
-			for(int var11 = this.chunkZ; var11 <= var9; ++var11) {
-				this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var1.getChunkFromChunkCoords(var10, var11);
+	public ChunkCache(World var1, int var2, int var3, int var4, int var5, int var6, int var7, int i8) {
+		this.worldObj = var1;
+		this.chunkX = var2 - i8 >> 4;
+		this.chunkZ = var4 - i8 >> 4;
+		int x = var5 + i8 >> 4;
+		int y = var7 + i8 >> 4;
+		this.chunkArray = new Chunk[x - this.chunkX + 1][y - this.chunkZ + 1];
+        this.isEmpty = true;
+
+		for(int var10 = this.chunkX; var10 <= x; ++var10) {
+			for(int var11 = this.chunkZ; var11 <= y; ++var11) {
+                Chunk var13 = var1.getChunkFromChunkCoords(var10, var11);
+                if (var13 != null) {
+                    this.chunkArray[var10 - this.chunkX][var11 - this.chunkZ] = var13;
+                }
 			}
 		}
 
+        for (int var14 = var2 >> 4; var14 <= var5 >> 4; ++var14) {
+            for (int var15 = var4 >> 4; var15 <= var7 >> 4; ++var15) {
+                Chunk var16 = this.chunkArray[var14 - this.chunkX][var15 - this.chunkZ];
+                if (var16 != null && !var16.isChunkRendered && (var3 < 128 || var16.blocks2 != null)) {
+                    this.isEmpty = false;
+                }
+            }
+        }
+
 	}
 
-	public int getBlockId(int var1, int var2, int var3) {
+    public boolean extendedLevelsInChunkCache() {
+        return this.isEmpty;
+    }
+
+    public int getBlockId(int var1, int var2, int var3) {
 		if(var2 < 0) {
 			return 0;
-		} else if(var2 >= 128) {
+		} else if(var2 >= 256) {
 			return 0;
 		} else {
 			int var4 = (var1 >> 4) - this.chunkX;
@@ -56,6 +80,7 @@ public class ChunkCache implements IBlockAccess {
 				var5 = this.getBlockId(var1, var2, var3);
 				if(var5 == Block.stairSingle.blockID || var5 == Block.tilledField.blockID) {
 					var6 = this.getLightValueExt(var1, var2 + 1, var3, false);
+
 					int var7 = this.getLightValueExt(var1 + 1, var2, var3, false);
 					int var8 = this.getLightValueExt(var1 - 1, var2, var3, false);
 					int var9 = this.getLightValueExt(var1, var2, var3 + 1, false);
@@ -82,7 +107,7 @@ public class ChunkCache implements IBlockAccess {
 
 			if(var2 < 0) {
 				return 0;
-			} else if(var2 >= 128) {
+			} else if(var2 >= 256) {
 				var5 = 15 - this.worldObj.skylightSubtracted;
 				if(var5 < 0) {
 					var5 = 0;
@@ -102,7 +127,7 @@ public class ChunkCache implements IBlockAccess {
 	public int getBlockMetadata(int var1, int var2, int var3) {
 		if(var2 < 0) {
 			return 0;
-		} else if(var2 >= 128) {
+		} else if(var2 >= 256) {
 			return 0;
 		} else {
 			int var4 = (var1 >> 4) - this.chunkX;

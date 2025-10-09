@@ -29,7 +29,7 @@ public class RenderGlobal implements IWorldAccess {
 	private int cloudTickCounter = 0;
 	private int starGLCallList;
 	private int glSkyList;
-	private int glSkyList2;
+    private int A;
 	private int minBlockX;
 	private int minBlockY;
 	private int minBlockZ;
@@ -100,8 +100,8 @@ public class RenderGlobal implements IWorldAccess {
 		}
 
 		GL11.glEndList();
-		this.glSkyList2 = this.starGLCallList + 2;
-		GL11.glNewList(this.glSkyList2, GL11.GL_COMPILE);
+		this.A = this.starGLCallList + 2;
+		GL11.glNewList(this.A, GL11.GL_COMPILE);
 		var5 = -16.0F;
 		var4.startDrawingQuads();
 
@@ -199,7 +199,7 @@ public class RenderGlobal implements IWorldAccess {
 		}
 
 		this.renderChunksWide = var1 / 16 + 1;
-		this.renderChunksTall = 8;
+		this.renderChunksTall = 16;
 		this.renderChunksDeep = var1 / 16 + 1;
 		this.worldRenderers = new WorldRenderer[this.renderChunksWide * this.renderChunksTall * this.renderChunksDeep];
 		this.sortedWorldRenderers = new WorldRenderer[this.renderChunksWide * this.renderChunksTall * this.renderChunksDeep];
@@ -579,7 +579,7 @@ public class RenderGlobal implements IWorldAccess {
 		GL11.glDepthMask(false);
 		GL11.glEnable(GL11.GL_FOG);
 		GL11.glColor3f(var3, var4, var5);
-		GL11.glCallList(this.glSkyList);
+		GL11.glCallList(this.A);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDisable(GL11.GL_FOG);
 		GL11.glDisable(GL11.GL_ALPHA_TEST);
@@ -623,7 +623,7 @@ public class RenderGlobal implements IWorldAccess {
 		GL11.glPopMatrix();
 		GL11.glColor3f(var3 * 0.2F + 0.04F, var4 * 0.2F + 0.04F, var5 * 0.6F + 0.1F);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glCallList(this.glSkyList2);
+		GL11.glCallList(this.A);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glDepthMask(true);
 	}

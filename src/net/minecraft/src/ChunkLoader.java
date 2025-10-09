@@ -113,7 +113,7 @@ public class ChunkLoader implements IChunkLoader {
 		var3.setByteArray("SkyLight", var1.skylightMap.data);
 		var3.setByteArray("BlockLight", var1.blocklightMap.data);
         if (var1.blocks2 != null) {
-            var3.setByteArray("Blocks2", var1.blocks);
+            var3.setByteArray("Blocks2", var1.blocks2);
             var3.setByteArray("Data2", var1.data2.data);
             var3.setByteArray("SkyLight2", var1.skylightMap2.data);
             var3.setByteArray("BlockLight2", var1.blocklightMap2.data);

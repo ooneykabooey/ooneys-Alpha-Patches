@@ -487,6 +487,7 @@ public class EntityRenderer {
 		double var8 = var2.lastTickPosX + (var2.posX - var2.lastTickPosX) * (double)var1;
 		double var10 = var2.lastTickPosY + (var2.posY - var2.lastTickPosY) * (double)var1;
 		double var12 = var2.lastTickPosZ + (var2.posZ - var2.lastTickPosZ) * (double)var1;
+        int var41 = MathHelper.floor_double(var10);
 		byte var14 = 5;
 		if(this.mc.options.fancyGraphics) {
 			var14 = 10;
@@ -498,6 +499,12 @@ public class EntityRenderer {
 				if(var17 < 0) {
 					var17 = 0;
 				}
+
+                int var40 = var17;
+                if (var17 < var41) {
+                    var40 = var41;
+                }
+
 
 				int var18 = var5 - var14;
 				int var19 = var5 + var14;
@@ -520,7 +527,7 @@ public class EntityRenderer {
 					double var27 = (double)((float)var16 + 0.5F) - var2.posZ;
 					float var29 = MathHelper.sqrt_double(var25 * var25 + var27 * var27) / (float)var14;
 					var7.startDrawingQuads();
-					float var30 = var3.getBrightness(var15, 128, var16);
+					float var30 = var3.getBrightness(var15, var40, var16);
 					GL11.glColor4f(var30, var30, var30, (1.0F - var29 * var29) * 0.7F);
 					var7.setTranslationD(-var8 * 1.0D, -var10 * 1.0D, -var12 * 1.0D);
 					var7.addVertexWithUV((double)(var15 + 0), (double)var18, (double)(var16 + 0), (double)(0.0F * var20 + var23), (double)((float)var18 * var20 / 8.0F + var22 * var20 + var24));

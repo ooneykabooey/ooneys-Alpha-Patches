@@ -926,7 +926,7 @@ public class World implements IBlockAccess {
 
 		for(int var9 = var3; var9 < var4; ++var9) {
 			for(int var10 = var7; var10 < var8; ++var10) {
-				if(this.blockExists(var9, 64, var10)) {
+				if(this.blockExists(var9, 128, var10)) {
 					for(int var11 = var5 - 1; var11 < var6; ++var11) {
 						Block var12 = Block.blocksList[this.getBlockId(var9, var11, var10)];
 						if(var12 != null) {
@@ -1048,7 +1048,7 @@ public class World implements IBlockAccess {
 
 	public int getTopSolidOrLiquidBlock(int var1, int var2) {
 		Chunk var3 = this.getChunkFromBlockCoords(var1, var2);
-		int var4 = 127;
+		int var4 = 255;
 		var1 &= 15;
 
 		for(var2 &= 15; var4 > 0; --var4) {
@@ -1510,29 +1510,38 @@ public class World implements IBlockAccess {
             if (lightingUpdatesScheduled != 50) {
                 int var9 = (var5 + var2) / 2;
                 int var10 = (var7 + var4) / 2;
-                if(this.blockExists(var9, 64, var10)) {
-                    int var11 = this.lightingToUpdate.size();
-                    if(var8) {
-                        int var12 = 4;
-                        if(var12 > var11) {
-                            var12 = var11;
-                        }
-
-                        for(int var13 = 0; var13 < var12; ++var13) {
-                            MetadataChunkBlock var14 = (MetadataChunkBlock)this.lightingToUpdate.get(this.lightingToUpdate.size() - var13 - 1);
-                            if(var14.skyBlock == var1 && var14.getLightUpdated(var2, var3, var4, var5, var6, var7)) {
-                                return;
-                            }
-                        }
-                    }
-
-                    this.lightingToUpdate.add(new MetadataChunkBlock(var1, var2, var3, var4, var5, var6, var7));
-                    if(this.lightingToUpdate.size() > 100000) {
-                        System.out.println("More than 1000000 updates, aborting lighting updates");
-                        this.lightingToUpdate.clear();
-                    }
-
+                if (this.blockExists(var9, 128, var10)) {
+                    return;
                 }
+
+                Chunk var11 = this.getChunkFromChunkCoords(var9, var10);
+                if (var11.isChunkRendered || var3 >= 128 && var11.blocks2 == null) {
+                    return;
+                }
+
+                int var12 = this.lightingToUpdate.size();
+                if (var8) {
+                    int var13 = 5;
+                    if (var13 > var12) {
+                        var13 = var12;
+                    }
+
+                    for (int var14 = 0; var14 < var13; ++var14) {
+                        MetadataChunkBlock var15 = (MetadataChunkBlock) this.lightingToUpdate.get(this.lightingToUpdate.size() - var14 - 1);
+                        if (var15.skyBlock == var1 && var15.getLightUpdated(var2, var3, var4, var5, var6, var7)) {
+                            return;
+                        }
+                    }
+                }
+
+                this.lightingToUpdate.add(new MetadataChunkBlock(var1, var2, var3, var4, var5, var6, var7));
+
+                if (this.lightingToUpdate.size() > 1000000) {
+                    System.out.println("More than 1,000,000 updates, aborting lighting updates.");
+                    this.lightingToUpdate.clear();
+                }
+
+                return;
             }
         } finally {
             --lightingUpdatesScheduled;
@@ -1638,25 +1647,40 @@ public class World implements IBlockAccess {
 				}
 			}
 
-			for(var6 = 0; var6 < 80; ++var6) {
-				this.updateLCG = this.updateLCG * 3 + this.DIST_HASH_MAGIC;
-				var7 = this.updateLCG >> 2;
-				var8 = var7 & 15;
-				var9 = var7 >> 8 & 15;
-				var10 = var7 >> 16 & 127;
-				byte var15 = var14.blocks[var8 << 11 | var9 << 7 | var10];
-				if(Block.tickOnLoad[var15]) {
-					Block.blocksList[var15].updateTick(this, var8 + var3, var10, var9 + var4, this.rand);
-				}
-			}
-		}
+            if (var14.blocks2 != null) {
+                for (int var17 = 0; var17 < 160; ++var17) {
+                    this.updateLCG = this.updateLCG * 3 + this.DIST_HASH_MAGIC;
+                    int var22 = this.updateLCG >> 2;
+                    int var29 = var22 & 15;
+                    int var32 = var22 >> 8 & 15;
+                    int var35 = var22 >> 16 & 255;
+                    byte var37 = (var35 & 128) == 0 ? var14.blocks[var29 << 11 | var32 << 7 | var35] : var14.blocks2[var29 << 11 | var32 << 7 | var35 & 127];
 
+                    if (Block.tickOnLoad[var37]) {
+                        Block.blocksList[var37].updateTick(this, var29 + var3, var35, var32 + var4, this.rand);
+                    }
+                }
+            } else {
+                for (int var16 = 0; var16 < 80; ++var16) {
+                    this.updateLCG = this.updateLCG * 3 + this.DIST_HASH_MAGIC;
+                    int var21 = this.updateLCG << 2;
+                    int var28 = var21 & 15;
+                    int var31 = var21 >> 8 & 15;
+                    int var34 = var21 >> 16 & 127;
+                    byte var36 = var14.blocks[var28 << 11 | var31 << 7 | var34];
+
+                    if (Block.tickOnLoad[var36]) {
+                        Block.blocksList[var36].updateTick(this, var28 + var3, var34, var31 + var4, this.rand);
+                    }
+                }
+            }
+		}
 	}
 
 	public boolean tickUpdates(boolean var1) {
 		int var2 = this.scheduledTickTreeSet.size();
 		if(var2 != this.scheduledTickSet.size()) {
-			throw new IllegalStateException("TickNextTick list out of synch");
+			throw new IllegalStateException("TickNextTick list out of sync");
 		} else {
 			if(var2 > 1000) {
 				var2 = 1000;

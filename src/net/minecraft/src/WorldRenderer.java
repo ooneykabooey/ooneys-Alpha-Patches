@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 
+/// bn.class
 public class WorldRenderer {
 	public World worldObj;
 	private int glRenderList = -1;
@@ -80,7 +81,6 @@ public class WorldRenderer {
 
 	public void updateRenderer() {
 		if(this.needsUpdate) {
-			++chunksUpdated;
 			int var1 = this.posX;
 			int var2 = this.posY;
 			int var3 = this.posZ;
@@ -97,8 +97,22 @@ public class WorldRenderer {
 			var21.addAll(this.tileEntityRenderers);
 			this.tileEntityRenderers.clear();
 			byte var8 = 1;
-			ChunkCache var9 = new ChunkCache(this.worldObj, var1 - var8, var2 - var8, var3 - var8, var4 + var8, var5 + var8, var6 + var8);
-			RenderBlocks var10 = new RenderBlocks(var9);
+			ChunkCache var9 = new ChunkCache(this.worldObj, var1 - var8, var2 - var8, var3 - var8, var4 + var8, var5 + var8, var6 + var8, var8);
+
+            if (var9.extendedLevelsInChunkCache()) {
+                HashSet var22 = new HashSet();
+                var22.addAll(this.tileEntityRenderers);
+                var22.removeAll(var21);
+                this.tileEntities.addAll(var22);
+                var21.removeAll(this.tileEntityRenderers);
+                this.tileEntities.removeAll(var21);
+                this.isChunkLit = Chunk.isLit;
+                this.isInitialized = true;
+                return;
+            }
+
+            ++chunksUpdated;
+            RenderBlocks var10 = new RenderBlocks(var9);
 
 			for(int var11 = 0; var11 < 2; ++var11) {
 				boolean var12 = false;
@@ -211,4 +225,9 @@ public class WorldRenderer {
 	public void markDirty() {
 		this.needsUpdate = true;
 	}
+
+    static {
+        tessellator = Tessellator.instance;
+        chunksUpdated = 0;
+    }
 }

@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import org.lwjgl.Sys;
+
 public class MetadataChunkBlock {
 	public final EnumSkyBlock skyBlock;
 	public int minX;
@@ -20,104 +22,119 @@ public class MetadataChunkBlock {
 	}
 
 	public void updateLight(World var1) {
-		int var2 = this.maxX - this.minX;
-		int var3 = this.maxY - this.minY;
-		int var4 = this.maxZ - this.minZ;
+		int var2 = this.maxX - this.minX + 1;
+		int var3 = this.maxY - this.minY + 1;
+		int var4 = this.maxZ - this.minZ + 1;
 		int var5 = var2 * var3 * var4;
-		if(var5 <= -Short.MIN_VALUE) {
+		if(var5 <= 74273) {
 			for(int var6 = this.minX; var6 <= this.maxX; ++var6) {
 				for(int var7 = this.minZ; var7 <= this.maxZ; ++var7) {
-					if(var1.blockExists(var6, 0, var7)) {
-						for(int var8 = this.minY; var8 <= this.maxY; ++var8) {
-							if(var8 >= 0 && var8 < 128) {
-								int var9 = var1.getSavedLightValue(this.skyBlock, var6, var8, var7);
-								boolean var10 = false;
-								int var11 = var1.getBlockId(var6, var8, var7);
-								int var12 = Block.lightOpacity[var11];
-								if(var12 == 0) {
-									var12 = 1;
-								}
+                    boolean var40 = var1.doChunksNearChunkExist(var6, 0, var7, 1);
+                    if (var40) {
+                        Chunk var41 = var1.getChunkFromChunkCoords(var6 >> 4, var7 >> 4);
+                        if (var41.isChunkRendered || this.minY >= 128 && var41.blocks2 == null) {
+                            var40 = false;
+                        }
+                    }
 
-								int var13 = 0;
-								if(this.skyBlock == EnumSkyBlock.Sky) {
-									if(var1.canExistingBlockSeeTheSky(var6, var8, var7)) {
-										var13 = 15;
-									}
-								} else if(this.skyBlock == EnumSkyBlock.Block) {
-									var13 = Block.lightValue[var11];
-								}
+                    if (var40) {
+                        if (this.minY < 0) {
+                            this.minY = 0;
+                        }
+                        if (this.maxY >= 256) {
+                            this.maxY = 255;
+                        }
 
-								int var14;
-								int var20;
-								if(var12 >= 15 && var13 == 0) {
-									var20 = 0;
-								} else {
-									var14 = var1.getSavedLightValue(this.skyBlock, var6 - 1, var8, var7);
-									int var15 = var1.getSavedLightValue(this.skyBlock, var6 + 1, var8, var7);
-									int var16 = var1.getSavedLightValue(this.skyBlock, var6, var8 - 1, var7);
-									int var17 = var1.getSavedLightValue(this.skyBlock, var6, var8 + 1, var7);
-									int var18 = var1.getSavedLightValue(this.skyBlock, var6, var8, var7 - 1);
-									int var19 = var1.getSavedLightValue(this.skyBlock, var6, var8, var7 + 1);
-									var20 = var14;
-									if(var15 > var14) {
-										var20 = var15;
-									}
+                        for (int var22 = this.minY; var22 <= this.maxY; ++var22) {
+                            int var10 = var1.getSavedLightValue(this.skyBlock, var6, var22, var7);
+                            boolean var11 = false;
+                            int var12 = var1.getBlockId(var6, var22, var7);
+                            int var13 = Block.lightOpacity[var12];
+                            if (var13 == 0) {
+                                var13 = 1;
+                            }
 
-									if(var16 > var20) {
-										var20 = var16;
-									}
+                            int var14 = 0;
+                            if (this.skyBlock == EnumSkyBlock.Sky) {
+                                if (var1.canExistingBlockSeeTheSky(var6, var22, var7)) {
+                                    var14 = 15;
+                                }
+                            } else if (this.skyBlock == EnumSkyBlock.Block) {
+                                var14 = Block.lightValue[var12];
+                            }
 
-									if(var17 > var20) {
-										var20 = var17;
-									}
+                            int var24;
+                            if (var13 >= 15 && var14 == 0) {
+                                var24 = 0;
+                            } else {
+                                int var15 = var1.getSavedLightValue(this.skyBlock, var6 - 1, var22, var7);
+                                int var17 = var1.getSavedLightValue(this.skyBlock, var6 + 1, var22, var7);
+                                int var18 = var1.getSavedLightValue(this.skyBlock, var6, var22 - 1, var7);
+                                int var19 = var1.getSavedLightValue(this.skyBlock, var6, var22 + 1, var7);
+                                int var20 = var1.getSavedLightValue(this.skyBlock, var6, var22, var7 - 1);
+                                int var21 = var1.getSavedLightValue(this.skyBlock, var6, var22, var7 + 1);
+                                var24 = var15;
+                                if (var17 > var15) {
+                                    var24 = var17;
+                                }
 
-									if(var18 > var20) {
-										var20 = var18;
-									}
+                                if (var18 > var24) {
+                                    var24 = var18;
+                                }
 
-									if(var19 > var20) {
-										var20 = var19;
-									}
+                                if (var19 > var24) {
+                                    var24 = var19;
+                                }
 
-									var20 -= var12;
-									if(var20 < 0) {
-										var20 = 0;
-									}
+                                if (var20 > var24) {
+                                    var24 = var20;
+                                }
 
-									if(var13 > var20) {
-										var20 = var13;
-									}
-								}
+                                if (var21 > var24) {
+                                    var24 = var21;
+                                }
 
-								if(var9 != var20) {
-									var1.setLightValue(this.skyBlock, var6, var8, var7, var20);
-									var14 = var20 - 1;
-									if(var14 < 0) {
-										var14 = 0;
-									}
+                                var24 -= var13;
+                                if (var24 < 0) {
+                                    var24 = 0;
+                                }
 
-									var1.neighborLightPropagationChanged(this.skyBlock, var6 - 1, var8, var7, var14);
-									var1.neighborLightPropagationChanged(this.skyBlock, var6, var8 - 1, var7, var14);
-									var1.neighborLightPropagationChanged(this.skyBlock, var6, var8, var7 - 1, var14);
-									if(var6 + 1 >= this.maxX) {
-										var1.neighborLightPropagationChanged(this.skyBlock, var6 + 1, var8, var7, var14);
-									}
+                                if (var14 > var24) {
+                                    var24 = var14;
+                                }
+                            }
 
-									if(var8 + 1 >= this.maxY) {
-										var1.neighborLightPropagationChanged(this.skyBlock, var6, var8 + 1, var7, var14);
-									}
 
-									if(var7 + 1 >= this.maxZ) {
-										var1.neighborLightPropagationChanged(this.skyBlock, var6, var8, var7 + 1, var14);
-									}
-								}
-							}
-						}
-					}
+                            if (var10 != var24) {
+                                var1.setLightValue(this.skyBlock, var6, var22, var7, var24);
+                                int var23 = var24 - 1;
+                                if (var23 < 0) {
+                                    var23 = 0;
+                                }
+
+                                var1.neighborLightPropagationChanged(this.skyBlock, var6 - 1, var22, var7, var23);
+                                var1.neighborLightPropagationChanged(this.skyBlock, var6, var22 - 1, var7, var23);
+                                var1.neighborLightPropagationChanged(this.skyBlock, var6, var22, var7 - 1, var23);
+
+                                if (var6 + 1 >= this.maxX) {
+                                    var1.neighborLightPropagationChanged(this.skyBlock, var6 + 1, var22, var7, var23);
+                                }
+
+                                if (var22 + 1 >= this.maxY) {
+                                    var1.neighborLightPropagationChanged(this.skyBlock, var6, var22 + 1, var7, var23);
+                                }
+
+                                if (var7 + 1 >= this.maxZ) {
+                                    var1.neighborLightPropagationChanged(this.skyBlock, var6, var22, var7 + 1, var23);
+                                }
+                            }
+                        }
+                    }
 				}
 			}
-
-		}
+		} else {
+            System.out.println("Light too large, skipping!");
+        }
 	}
 
 	public boolean getLightUpdated(int var1, int var2, int var3, int var4, int var5, int var6) {
