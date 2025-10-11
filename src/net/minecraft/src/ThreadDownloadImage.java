@@ -1,8 +1,8 @@
 package net.minecraft.src;
 
-import javax.imageio.ImageIO;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import javax.imageio.ImageIO;
 
 class ThreadDownloadImage extends Thread {
 	final String location;

@@ -1,13 +1,16 @@
 package net.minecraft.src;
 
-import org.lwjgl.Sys;
-import org.lwjgl.opengl.GL11;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Panel;
+import java.awt.TextArea;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.lwjgl.Sys;
+import org.lwjgl.opengl.GL11;
 
 public class PanelCrashReport extends Panel {
 	public PanelCrashReport(UnexpectedThrowable var1) {

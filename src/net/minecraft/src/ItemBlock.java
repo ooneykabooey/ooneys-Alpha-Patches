@@ -45,6 +45,7 @@ public class ItemBlock extends Item {
 				Block var8 = Block.blocksList[this.blockID];
 				if(var3.setBlockWithNotify(var4, var5, var6, this.blockID)) {
 					Block.blocksList[this.blockID].onBlockPlaced(var3, var4, var5, var6, var7);
+                    Block.blocksList[this.blockID].onBlockPlacedBy(var3, var4, var5, var6, var2);
 					var3.playSoundEffect((double)((float)var4 + 0.5F), (double)((float)var5 + 0.5F), (double)((float)var6 + 0.5F), var8.stepSound.getStepSound(), (var8.stepSound.getVolume() + 1.0F) / 2.0F, var8.stepSound.getPitch() * 0.8F);
 					--var1.stackSize;
 				}

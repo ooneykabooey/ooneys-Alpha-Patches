@@ -469,7 +469,11 @@ public class Block {
 		this.dropBlockAsItem(var1, var2, var3, var4, var5);
 	}
 
-	public boolean canBlockStay(World var1, int var2, int var3, int var4) {
+    public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {
+    }
+
+
+    public boolean canBlockStay(World var1, int var2, int var3, int var4) {
 		return true;
 	}
 

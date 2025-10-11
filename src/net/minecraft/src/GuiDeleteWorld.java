@@ -1,8 +1,7 @@
 package net.minecraft.src;
 
-import net.minecraft.client.Minecraft;
-
 import java.io.File;
+import net.minecraft.client.Minecraft;
 
 public class GuiDeleteWorld extends GuiSelectWorld {
 	public GuiDeleteWorld(GuiScreen var1) {

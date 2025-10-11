@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
+import java.util.Random;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-
-import java.util.Random;
 
 public class RenderItem extends Render {
 	private RenderBlocks itemRenderBlocks = new RenderBlocks();

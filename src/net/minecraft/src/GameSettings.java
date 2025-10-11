@@ -1,9 +1,12 @@
 package net.minecraft.src;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
-
-import java.io.*;
 
 public class GameSettings {
 	private static final String[] RENDER_DISTANCES = new String[]{"FAR", "NORMAL", "SHORT", "TINY"};

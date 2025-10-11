@@ -57,87 +57,25 @@ public class BlockStairs extends Block {
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public void onNeighborBlockChange(World var1, int var2, int var3, int var4, int var5) {
-		if(!var1.multiplayerWorld) {
-			if(var1.getBlockMaterial(var2, var3 + 1, var4).isSolid()) {
-				var1.setBlockWithNotify(var2, var3, var4, this.modelBlock.blockID);
-			} else {
-				this.updateState(var1, var2, var3, var4);
-				this.updateState(var1, var2 + 1, var3 - 1, var4);
-				this.updateState(var1, var2 - 1, var3 - 1, var4);
-				this.updateState(var1, var2, var3 - 1, var4 - 1);
-				this.updateState(var1, var2, var3 - 1, var4 + 1);
-				this.updateState(var1, var2 + 1, var3 + 1, var4);
-				this.updateState(var1, var2 - 1, var3 + 1, var4);
-				this.updateState(var1, var2, var3 + 1, var4 - 1);
-				this.updateState(var1, var2, var3 + 1, var4 + 1);
-			}
+    public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {
+        int var6 = MathHelper.floor_double((double)(var5.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        if(var6 == 0) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 2);
+        }
 
-			this.modelBlock.onNeighborBlockChange(var1, var2, var3, var4, var5);
-		}
-	}
+        if(var6 == 1) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 1);
+        }
 
-	private void updateState(World var1, int var2, int var3, int var4) {
-		if(this.isBlockStair(var1, var2, var3, var4)) {
-			byte var5 = -1;
-			if(this.isBlockStair(var1, var2 + 1, var3 + 1, var4)) {
-				var5 = 0;
-			}
+        if(var6 == 2) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 3);
+        }
 
-			if(this.isBlockStair(var1, var2 - 1, var3 + 1, var4)) {
-				var5 = 1;
-			}
+        if(var6 == 3) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 0);
+        }
 
-			if(this.isBlockStair(var1, var2, var3 + 1, var4 + 1)) {
-				var5 = 2;
-			}
-
-			if(this.isBlockStair(var1, var2, var3 + 1, var4 - 1)) {
-				var5 = 3;
-			}
-
-			if(var5 < 0) {
-				if(this.isBlockSolid(var1, var2 + 1, var3, var4) && !this.isBlockSolid(var1, var2 - 1, var3, var4)) {
-					var5 = 0;
-				}
-
-				if(this.isBlockSolid(var1, var2 - 1, var3, var4) && !this.isBlockSolid(var1, var2 + 1, var3, var4)) {
-					var5 = 1;
-				}
-
-				if(this.isBlockSolid(var1, var2, var3, var4 + 1) && !this.isBlockSolid(var1, var2, var3, var4 - 1)) {
-					var5 = 2;
-				}
-
-				if(this.isBlockSolid(var1, var2, var3, var4 - 1) && !this.isBlockSolid(var1, var2, var3, var4 + 1)) {
-					var5 = 3;
-				}
-			}
-
-			if(var5 < 0) {
-				if(this.isBlockStair(var1, var2 - 1, var3 - 1, var4)) {
-					var5 = 0;
-				}
-
-				if(this.isBlockStair(var1, var2 + 1, var3 - 1, var4)) {
-					var5 = 1;
-				}
-
-				if(this.isBlockStair(var1, var2, var3 - 1, var4 - 1)) {
-					var5 = 2;
-				}
-
-				if(this.isBlockStair(var1, var2, var3 - 1, var4 + 1)) {
-					var5 = 3;
-				}
-			}
-
-			if(var5 >= 0) {
-				var1.setBlockMetadataWithNotify(var2, var3, var4, var5);
-			}
-
-		}
-	}
+    }
 
 	private boolean isBlockSolid(World var1, int var2, int var3, int var4) {
 		return var1.getBlockMaterial(var2, var3, var4).isSolid();

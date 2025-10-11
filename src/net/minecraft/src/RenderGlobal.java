@@ -1,12 +1,15 @@
 package net.minecraft.src;
 
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.opengl.ARBOcclusionQuery;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-
-import java.nio.IntBuffer;
-import java.util.*;
 
 public class RenderGlobal implements IWorldAccess {
 	public List tileEntities = new ArrayList();

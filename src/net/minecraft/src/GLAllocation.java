@@ -1,13 +1,12 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import org.lwjgl.opengl.GL11;
 
 public class GLAllocation {
 	private static List displayLists = new ArrayList();

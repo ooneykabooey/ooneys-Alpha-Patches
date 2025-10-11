@@ -1,9 +1,8 @@
 package net.minecraft.src;
 
-import org.lwjgl.opengl.GL11;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.lwjgl.opengl.GL11;
 
 public class TileEntityMobSpawnerRenderer extends TileEntitySpecialRenderer {
 	private Map entityHashMap = new HashMap();

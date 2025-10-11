@@ -107,4 +107,24 @@ public class BlockFurnace extends BlockContainer {
 	protected TileEntity getBlockEntity() {
 		return new TileEntityFurnace();
 	}
+
+    public void onBlockPlacedBy(World var1, int var2, int var3, int var4, EntityLiving var5) {
+        int var6 = MathHelper.floor_double((double)(var5.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        if(var6 == 0) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 2);
+        }
+
+        if(var6 == 1) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 5);
+        }
+
+        if(var6 == 2) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 3);
+        }
+
+        if(var6 == 3) {
+            var1.setBlockMetadataWithNotify(var2, var3, var4, 4);
+        }
+
+    }
 }

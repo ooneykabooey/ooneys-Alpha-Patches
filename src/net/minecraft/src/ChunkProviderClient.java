@@ -1,6 +1,10 @@
 package net.minecraft.src;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChunkProviderClient implements IChunkProvider {
 	private Chunk blankChunk;

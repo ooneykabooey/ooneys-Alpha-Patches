@@ -1,9 +1,5 @@
 package net.minecraft.src;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -11,6 +7,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import javax.imageio.ImageIO;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author https://www.youtube.com/channel/UCihhEiR0PEPeSXZGtyX-U_A
