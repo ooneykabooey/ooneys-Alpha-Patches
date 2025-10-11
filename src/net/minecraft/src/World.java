@@ -1496,14 +1496,16 @@ public class World implements IBlockAccess {
 		++lightingUpdatesScheduled;
 
         try {
-            if (lightingUpdatesScheduled != 50) {
+            if (lightingUpdatesScheduled == 50) {
+                return;
+            }
                 int var9 = (var5 + var2) / 2;
                 int var10 = (var7 + var4) / 2;
-                if (this.blockExists(var9, 128, var10)) {
+                if (!this.blockExists(var9, 128, var10)) {
                     return;
                 }
 
-                Chunk var11 = this.getChunkFromBlockCoords(var9, var10);
+                Chunk var11 = this.getChunkFromBlockCoords(var9, var10); /// Check getChunkFromChunkCoords
                 if (var11.isChunkRendered || var3 >= 128 && var11.blocks2 == null) {
                     return;
                 }
@@ -1531,7 +1533,7 @@ public class World implements IBlockAccess {
                 }
 
                 return;
-            }
+
         } finally {
             --lightingUpdatesScheduled;
         }

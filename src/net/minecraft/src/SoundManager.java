@@ -217,7 +217,7 @@ public class SoundManager {
             // Access private sndSystem via reflection if needed
             java.lang.reflect.Field sndField = SoundManager.class.getDeclaredField("sndSystem");
             sndField.setAccessible(true);
-            SoundSystem sndSystem = (SoundSystem) sndField.get(this);
+            paulscode.sound.SoundSystem sndSystem = (paulscode.sound.SoundSystem) sndField.get(this);
 
             if(sndSystem != null && sndSystem.playing(streamId)) {
                 sndSystem.stop(streamId);
