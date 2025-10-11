@@ -16,7 +16,8 @@ public class EntitySheep extends EntityAnimal {
 
 			for(int var4 = 0; var4 < var3; ++var4) {
 				EntityItem var5 = this.entityDropItem(Block.cloth.blockID, 1, 1.0F);
-				var5.motionY += (double)(this.rand.nextFloat() * 0.05F);
+
+                var5.motionY += (double)(this.rand.nextFloat() * 0.05F);
 				var5.motionX += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
 				var5.motionZ += (double)((this.rand.nextFloat() - this.rand.nextFloat()) * 0.1F);
             }

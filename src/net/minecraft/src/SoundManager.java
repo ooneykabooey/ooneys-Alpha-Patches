@@ -1,15 +1,15 @@
 package net.minecraft.src;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.codecs.CodecWav;
 import paulscode.sound.libraries.LibraryLWJGLOpenAL;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 public class SoundManager {
     private Set<String> loadedStreamingSounds = new HashSet<>();

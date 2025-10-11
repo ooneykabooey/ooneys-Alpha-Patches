@@ -1,13 +1,14 @@
 package net.minecraft.src;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 
 public class GuiMainMenu extends GuiScreen {
 	private static final Random rand = new Random();

@@ -1,8 +1,9 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+
 import java.net.ConnectException;
 import java.net.UnknownHostException;
-import net.minecraft.client.Minecraft;
 
 class ThreadConnectToServer extends Thread {
 	final Minecraft mc;

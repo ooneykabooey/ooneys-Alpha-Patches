@@ -1,7 +1,6 @@
 package net.minecraft.src;
 
-import java.awt.Canvas;
-import java.awt.Dimension;
+import java.awt.*;
 
 class CanvasCrashReport extends Canvas {
 	public CanvasCrashReport(int var1) {

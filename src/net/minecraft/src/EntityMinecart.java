@@ -267,8 +267,8 @@ public class EntityMinecart extends Entity implements IInventory {
 							this.motionX *= (double)0.8F;
 							this.motionY *= 0.0D;
 							this.motionZ *= (double)0.8F;
-							this.motionX += this.pushX * var38;
-							this.motionZ += this.pushZ * var38;
+							this.motionX += 1.5 *this.pushX * var38;
+							this.motionZ += 1.5 *this.pushZ * var38;
 						} else {
 							this.motionX *= (double)0.9F;
 							this.motionY *= 0.0D;

@@ -1,18 +1,16 @@
 package net.minecraft.src;
 
-import java.awt.Graphics;
+import org.lwjgl.opengl.GL11;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import javax.imageio.ImageIO;
-import org.lwjgl.opengl.GL11;
 
 public class RenderEngine {
 	public static boolean useMipmaps = false;

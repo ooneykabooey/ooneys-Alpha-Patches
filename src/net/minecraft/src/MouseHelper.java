@@ -1,10 +1,11 @@
 package net.minecraft.src;
 
-import java.awt.Component;
-import java.nio.IntBuffer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
+
+import java.awt.*;
+import java.nio.IntBuffer;
 
 public class MouseHelper {
 	private Component windowComponent;

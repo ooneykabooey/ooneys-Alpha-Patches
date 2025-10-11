@@ -1,9 +1,10 @@
 package net.minecraft.src;
 
+import net.minecraft.client.Minecraft;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import net.minecraft.client.Minecraft;
 
 public class TextureCompassFX extends TextureFX {
 	protected float[] currentFireFrame = new float[320];
