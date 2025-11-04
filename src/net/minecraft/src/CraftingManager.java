@@ -7,7 +7,7 @@ import java.util.List;
 
 public class CraftingManager {
 	private static final CraftingManager instance = new CraftingManager();
-	private List recipes = new ArrayList();
+	public List<CraftingRecipe> recipes = new ArrayList();
 
 	public static final CraftingManager getInstance() {
 		return instance;
@@ -20,6 +20,7 @@ public class CraftingManager {
 		(new RecipesFood()).addRecipes(this);
 		(new RecipesCrafting()).addRecipes(this);
 		(new RecipesArmor()).addRecipes(this);
+        ModLoader.AddAllRecipes(this);
 		this.addRecipe(new ItemStack(Item.paper, 3), new Object[]{"###", Character.valueOf('#'), Item.reed});
 		this.addRecipe(new ItemStack(Item.book, 1), new Object[]{"#", "#", "#", Character.valueOf('#'), Item.paper});
 		this.addRecipe(new ItemStack(Block.fence, 2), new Object[]{"###", "###", Character.valueOf('#'), Item.stick});
@@ -62,7 +63,7 @@ public class CraftingManager {
 		System.out.println(this.recipes.size() + " recipes");
 	}
 
-	void addRecipe(ItemStack var1, Object... var2) {
+	void addRecipe(ItemStack var1, Object[] var2) {
 		String var3 = "";
 		int var4 = 0;
 		int var5 = 0;
@@ -85,7 +86,7 @@ public class CraftingManager {
 			}
 		}
 
-		HashMap var12;
+		HashMap<Character, Integer> var12;
 		int var15;
 		for(var12 = new HashMap(); var4 < var2.length; var4 += 2) {
 			Character var13 = (Character)var2[var4];

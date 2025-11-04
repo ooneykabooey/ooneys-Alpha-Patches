@@ -173,7 +173,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 	}
 
 	private int getCookedItem(int var1) {
-		return var1 == Block.oreIron.blockID ? Item.ingotIron.shiftedIndex : (var1 == Block.oreGold.blockID ? Item.ingotGold.shiftedIndex : (var1 == Block.oreDiamond.blockID ? Item.diamond.shiftedIndex : (var1 == Block.sand.blockID ? Block.glass.blockID : (var1 == Item.porkRaw.shiftedIndex ? Item.porkCooked.shiftedIndex : (var1 == Block.cobblestone.blockID ? Block.stone.blockID : (var1 == Item.clay.shiftedIndex ? Item.brick.shiftedIndex : -1))))));
+		return var1 == Block.oreIron.blockID ? Item.ingotIron.shiftedIndex : (var1 == Block.oreGold.blockID ? Item.ingotGold.shiftedIndex : (var1 == Block.oreDiamond.blockID ? Item.diamond.shiftedIndex : (var1 == Block.sand.blockID ? Block.glass.blockID : (var1 == Item.porkRaw.shiftedIndex ? Item.porkCooked.shiftedIndex : (var1 == Block.cobblestone.blockID ? Block.stone.blockID : (var1 == Item.clay.shiftedIndex ? Item.brick.shiftedIndex : ModLoader.AddAllSmelting(var1)))))));
 	}
 
 	private int getItemBurnTime(ItemStack var1) {
@@ -181,7 +181,7 @@ public class TileEntityFurnace extends TileEntity implements IInventory {
 			return 0;
 		} else {
 			int var2 = var1.getItem().shiftedIndex;
-			return var2 < 256 && Block.blocksList[var2].material == Material.wood ? 300 : (var2 == Item.stick.shiftedIndex ? 100 : (var2 == Item.coal.shiftedIndex ? 1600 : (var2 == Item.bucketLava.shiftedIndex ? 20000 : 0)));
+			return var2 < 256 && Block.blocksList[var2].material == Material.wood ? 300 : (var2 == Item.stick.shiftedIndex ? 100 : (var2 == Item.coal.shiftedIndex ? 1600 : (var2 == Item.bucketLava.shiftedIndex ? 20000 : ModLoader.AddAllFuel(var2))));
 		}
 	}
 }

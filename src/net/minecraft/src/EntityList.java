@@ -100,5 +100,6 @@ public class EntityList {
 		addMapping(EntityFallingSand.class, "FallingSand", 21);
 		addMapping(EntityMinecart.class, "Minecart", 40);
 		addMapping(EntityBoat.class, "Boat", 41);
+        ModLoader.AddAllEntityIDs();
 	}
 }

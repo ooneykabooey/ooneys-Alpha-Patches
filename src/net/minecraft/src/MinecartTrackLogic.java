@@ -317,6 +317,7 @@ class MinecartTrackLogic {
 
 	}
 
+
 	static int getNAdjacentTracks(MinecartTrackLogic var0) {
 		return var0.getAdjacentTracks();
 	}

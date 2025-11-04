@@ -46,6 +46,8 @@ public class RenderManager {
 		this.entityRenderMap.put(EntityFallingSand.class, new RenderFallingSand());
 		this.entityRenderMap.put(EntityMinecart.class, new RenderMinecart());
 		this.entityRenderMap.put(EntityBoat.class, new RenderBoat());
+        ModLoader.AddAllRenderers(this.entityRenderMap);
+
 		Iterator var1 = this.entityRenderMap.values().iterator();
 
 		while(var1.hasNext()) {

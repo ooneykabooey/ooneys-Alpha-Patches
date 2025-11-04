@@ -43,6 +43,7 @@ public class Session {
 		registeredBlocksList.add(Block.bookshelf);
 		registeredBlocksList.add(Block.tnt);
 		registeredBlocksList.add(Block.obsidian);
+        ModLoader.RegisterAllBlocks(registeredBlocksList);
 		System.out.println(registeredBlocksList.size());
 	}
 }

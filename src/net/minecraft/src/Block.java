@@ -120,6 +120,10 @@ public class Block {
 	public final Material material;
 	public float slipperiness;
 
+
+
+
+
 	protected Block(int var1, Material var2) {
 		this.stepSound = soundPowderFootstep;
 		this.blockParticleGravity = 1.0F;
@@ -478,6 +482,7 @@ public class Block {
 	}
 
 	static {
+        ModLoader.Init();
 		for(int var0 = 0; var0 < 256; ++var0) {
 			if(blocksList[var0] != null) {
 				Item.itemsList[var0] = new ItemBlock(var0 - 256);
