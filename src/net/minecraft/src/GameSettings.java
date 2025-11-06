@@ -27,7 +27,9 @@ public class GameSettings {
 	public KeyBinding keyBindChat = new KeyBinding("Chat", 20);
 	public KeyBinding keyBindToggleFog = new KeyBinding("Toggle fog", 33);
 	public KeyBinding keyBindSneak = new KeyBinding("Sneak", 42);
-	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog};
+    public KeyBinding keyBindZoom = new KeyBinding("Zoom", 34);
+    public KeyBinding keyBindPerspective = new KeyBinding("Perspective", 63);
+	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog, this.keyBindZoom, this.keyBindPerspective};
 	protected Minecraft mc;
 	private File optionsFile;
 	public int numberOfOptions = 10;

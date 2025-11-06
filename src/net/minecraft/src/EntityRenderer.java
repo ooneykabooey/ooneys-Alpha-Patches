@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import net.minecraft.client.Minecraft;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -29,6 +30,9 @@ public class EntityRenderer {
 	float fogColorBlue;
 	private float prevFogColor;
 	private float fogColor;
+
+    public float zoomFOV = 1.0F;
+    private float targetZoomFOV = 1.0F;
 
 	public EntityRenderer(Minecraft var1) {
 		this.mc = var1;
@@ -113,6 +117,16 @@ public class EntityRenderer {
 
         // Apply fovoffset from scroll wheel
         var3 += fovScrollOffset;
+
+        // When pressing zoom key, zoom in with interpolation.
+        if (Keyboard.isKeyDown(this.mc.options.keyBindZoom.keyCode)) {
+            targetZoomFOV = 0.3F;
+        } else {
+            targetZoomFOV = 1.0F;
+        }
+
+        zoomFOV += (targetZoomFOV - zoomFOV) * 0.15F;
+        var3 *= zoomFOV;
 
         // FOV Range
         if (var3 < 15.0F) var3 = 15.0F;

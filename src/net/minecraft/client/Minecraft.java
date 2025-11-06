@@ -135,7 +135,7 @@ public abstract class Minecraft implements Runnable {
 		this.loadScreen();
 		Keyboard.create();
 		Mouse.create();
-		this.mouseHelper = new MouseHelper(this.mcCanvas);
+		this.mouseHelper = new MouseHelper(this.mcCanvas, this);
 
 		try {
 			Controllers.create();
@@ -814,7 +814,7 @@ public abstract class Minecraft implements Runnable {
 													this.forceReload();
 												}
 
-												if(Keyboard.getEventKey() == Keyboard.KEY_F5) {
+												if(Keyboard.getEventKey() == this.options.keyBindPerspective.keyCode) {
 
 
 													if (this.options.thirdPersonView) {

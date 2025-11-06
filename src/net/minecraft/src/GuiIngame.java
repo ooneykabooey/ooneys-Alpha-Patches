@@ -25,6 +25,9 @@ public class GuiIngame extends Gui {
 	public float damageGuiPartialTime;
 	float prevVignetteBrightness = 1.0F;
 
+    private boolean debugMenuOpen = false;
+    private boolean f3KeyWasPressed = false;
+
 	public GuiIngame(Minecraft var1) {
 		this.mc = var1;
 	}
@@ -146,7 +149,16 @@ public class GuiIngame extends Gui {
         RenderHelper.disableStandardItemLighting();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         String var21;
-        if (Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+
+        boolean f3Pressed = Keyboard.isKeyDown(Keyboard.KEY_F3);
+
+        if (f3Pressed && !f3KeyWasPressed) {
+            debugMenuOpen = !debugMenuOpen;
+        }
+
+        f3KeyWasPressed = f3Pressed;
+
+        if (debugMenuOpen) {
             var8.drawStringWithShadow("Minecraft Alpha v1.1.2_01 (" + this.mc.debug + ")", 2, 2, 16777215);
             var8.drawStringWithShadow(this.mc.debugInfoRenders(), 2, 12, 16777215);
             var8.drawStringWithShadow(this.mc.getEntityDebug(), 2, 22, 16777215);
@@ -156,9 +168,9 @@ public class GuiIngame extends Gui {
             long var28 = Runtime.getRuntime().freeMemory();
             long var19 = var27 - var28;
             var21 = "Used memory: " + var19 * 100L / var22 + "% (" + var19 / 1024L / 1024L + "MB) of " + var22 / 1024L / 1024L + "MB";
-            this.drawString(var8, var21, var6 - var8.getStringWidth(var21) - 2, 2, 14737632);
-            var21 = "Allocated memory: " + var27 * 100L / var22 + "% (" + var27 / 1024L / 1024L + "MB)";
             this.drawString(var8, var21, var6 - var8.getStringWidth(var21) - 2, 12, 14737632);
+            var21 = "Allocated memory: " + var27 * 100L / var22 + "% (" + var27 / 1024L / 1024L + "MB)";
+            this.drawString(var8, var21, var6 - var8.getStringWidth(var21) - 2, 22, 14737632);
             this.drawString(var8, "x: " + this.mc.thePlayer.posX, 2, 62, 14737632);
             this.drawString(var8, "y: " + this.mc.thePlayer.posY, 2, 72, 14737632);
             this.drawString(var8, "z: " + this.mc.thePlayer.posZ, 2, 82, 14737632);
