@@ -9,6 +9,7 @@ public class GameSettings {
 	private static final String[] RENDER_DISTANCES = new String[]{"FAR", "NORMAL", "SHORT", "TINY"};
 	private static final String[] DIFFICULTY_LEVELS = new String[]{"Peaceful", "Easy", "Normal", "Hard"};
 	public float musicVolume = 1.0F;
+    public float fovOption = 0.583F;
 	public float soundVolume = 1.0F;
 	public float mouseSensitivity = 0.5F;
 	public boolean invertMouse = false;
@@ -32,7 +33,7 @@ public class GameSettings {
 	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog, this.keyBindZoom, this.keyBindPerspective};
 	protected Minecraft mc;
 	private File optionsFile;
-	public int numberOfOptions = 10;
+	public int numberOfOptions = 11;
 	public int difficulty = 2;
 	public boolean thirdPersonView = false;
     public boolean thirdPersonFront = false; // false = facing back, true = facing front
@@ -56,49 +57,53 @@ public class GameSettings {
 	}
 
 	public void setOptionFloatValue(int var1, float var2) {
-		if(var1 == 0) {
+        if (var1 == 0) {
+            this.fovOption = 15.0F + var2 * 90.0F;
+        }
+
+		if(var1 == 1) {
 			this.musicVolume = var2;
 			this.mc.sndManager.onSoundOptionsChanged();
 		}
 
-		if(var1 == 1) {
+		if(var1 == 2) {
 			this.soundVolume = var2;
 			this.mc.sndManager.onSoundOptionsChanged();
 		}
 
-		if(var1 == 3) {
+		if(var1 == 4) {
 			this.mouseSensitivity = var2;
 		}
 
 	}
 
 	public void setOptionValue(int var1, int var2) {
-		if(var1 == 2) {
+		if(var1 == 3) {
 			this.invertMouse = !this.invertMouse;
 		}
 
-		if(var1 == 4) {
+		if(var1 == 5) {
 			this.renderDistance = this.renderDistance + var2 & 3;
 		}
 
-		if(var1 == 5) {
+		if(var1 == 6) {
 			this.viewBobbing = !this.viewBobbing;
 		}
 
-		if(var1 == 6) {
+		if(var1 == 7) {
 			this.anaglyph = !this.anaglyph;
 			this.mc.renderEngine.refreshTextures();
 		}
 
-		if(var1 == 7) {
+		if(var1 == 8) {
 			this.limitFramerate = !this.limitFramerate;
 		}
 
-		if(var1 == 8) {
+		if(var1 == 9) {
 			this.difficulty = this.difficulty + var2 & 3;
 		}
 
-		if(var1 == 9) {
+		if(var1 == 10) {
 			this.fancyGraphics = !this.fancyGraphics;
 			this.mc.renderGlobal.loadRenderers();
 		}
@@ -107,15 +112,15 @@ public class GameSettings {
 	}
 
 	public int isSlider(int var1) {
-		return var1 == 0 ? 1 : (var1 == 1 ? 1 : (var1 == 3 ? 1 : 0));
+		return var1 == 0 ? 1 : (var1 == 1 ? 1 : (var1 == 2 ? 1 : (var1 == 4 ? 1 : 0)));
 	}
 
 	public float getOptionFloatValue(int var1) {
-		return var1 == 0 ? this.musicVolume : (var1 == 1 ? this.soundVolume : (var1 == 3 ? this.mouseSensitivity : 0.0F));
+		return var1 == 0 ? this.fovOption : (var1 == 1 ? this.musicVolume : (var1 == 2 ? this.soundVolume : (var1 == 4 ? this.mouseSensitivity : 0.0F)));
 	}
 
 	public String getOptionDisplayString(int var1) {
-		return var1 == 0 ? "Music: " + (this.musicVolume > 0.0F ? (int)(this.musicVolume * 100.0F) + "%" : "OFF") : (var1 == 1 ? "Sound: " + (this.soundVolume > 0.0F ? (int)(this.soundVolume * 100.0F) + "%" : "OFF") : (var1 == 2 ? "Invert mouse: " + (this.invertMouse ? "ON" : "OFF") : (var1 == 3 ? (this.mouseSensitivity == 0.0F ? "Sensitivity: *yawn*" : (this.mouseSensitivity == 1.0F ? "Sensitivity: HYPERSPEED!!!" : "Sensitivity: " + (int)(this.mouseSensitivity * 200.0F) + "%")) : (var1 == 4 ? "Render distance: " + RENDER_DISTANCES[this.renderDistance] : (var1 == 5 ? "View bobbing: " + (this.viewBobbing ? "ON" : "OFF") : (var1 == 6 ? "3d anaglyph: " + (this.anaglyph ? "ON" : "OFF") : (var1 == 7 ? "Limit framerate: " + (this.limitFramerate ? "ON" : "OFF") : (var1 == 8 ? "Difficulty: " + DIFFICULTY_LEVELS[this.difficulty] : (var1 == 9 ? "Graphics: " + (this.fancyGraphics ? "FANCY" : "FAST") : "")))))))));
+		return var1 == 0 ? "FOV: " + (this.fovOption > 15.0F ? (int)(this.fovOption) + "°" : "ZOOOOM") : (var1 == 1 ? "Music: " + (this.musicVolume > 0.0F ? (int)(this.musicVolume * 100.0F) + "%" : "OFF") : (var1 == 2 ? "Sound: " + (this.soundVolume > 0.0F ? (int)(this.soundVolume * 100.0F) + "%" : "OFF") : (var1 == 3 ? "Invert mouse: " + (this.invertMouse ? "ON" : "OFF") : (var1 == 4 ? (this.mouseSensitivity == 0.0F ? "Sensitivity: *yawn*" : (this.mouseSensitivity == 1.0F ? "Sensitivity: HYPERSPEED!!!" : "Sensitivity: " + (int)(this.mouseSensitivity * 200.0F) + "%")) : (var1 == 5 ? "Render distance: " + RENDER_DISTANCES[this.renderDistance] : (var1 == 6 ? "View bobbing: " + (this.viewBobbing ? "ON" : "OFF") : (var1 == 7 ? "3d anaglyph: " + (this.anaglyph ? "ON" : "OFF") : (var1 == 8 ? "Limit framerate: " + (this.limitFramerate ? "ON" : "OFF") : (var1 == 9 ? "Difficulty: " + DIFFICULTY_LEVELS[this.difficulty] : (var1 == 10 ? "Graphics: " + (this.fancyGraphics ? "FANCY" : "FAST") : ""))))))))));
 	}
 
 	public void loadOptions() {
@@ -135,6 +140,11 @@ public class GameSettings {
 				}
 
 				String[] var3 = var2.split(":");
+
+                if (var3[0].equals("fov")) {
+                    this.fovOption = Float.parseFloat(var3[1]);
+                }
+
 				if(var3[0].equals("music")) {
 					this.musicVolume = this.parseFloat(var3[1]);
 				}
@@ -195,6 +205,7 @@ public class GameSettings {
 	public void saveOptions() {
 		try {
 			PrintWriter var1 = new PrintWriter(new FileWriter(this.optionsFile));
+            var1.println("fov: " + this.fovOption);
 			var1.println("music:" + this.musicVolume);
 			var1.println("sound:" + this.soundVolume);
 			var1.println("invertYMouse:" + this.invertMouse);

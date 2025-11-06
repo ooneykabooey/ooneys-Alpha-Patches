@@ -199,7 +199,7 @@ public class GuiIngame extends Gui {
             var8.drawStringWithShadow(topRightText, 2, 2, 16777215);
         }
 
-        this.renderFOVOverlay();
+
 
 
         if (this.recordPlayingUpFor > 0) {
@@ -299,15 +299,7 @@ public class GuiIngame extends Gui {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-    public void renderFOVOverlay() {
-        if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
-            String fovText = "FOV: " + (int) this.mc.entityRenderer.getFOVModifier(0.0F);
-            int screenWidth = this.mc.displayWidth;
-            FontRenderer font = this.mc.fontRenderer;
-            int textWidth = font.getStringWidth(fovText);
-            font.drawStringWithShadow(fovText, 2, 24, 0xFFFFFF);
-        }
-    }
+
 
 
     private void renderInventorySlot(int var1, int var2, int var3, float var4) {
