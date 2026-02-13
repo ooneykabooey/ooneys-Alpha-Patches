@@ -5,6 +5,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 
 import java.awt.*;
 import java.nio.IntBuffer;
@@ -42,9 +43,10 @@ public class MouseHelper {
 	}
 
 	public void ungrabMouseCursor() {
-        if (this.windowComponent != null) {
-            Mouse.setCursorPosition(this.windowComponent.getWidth() / 2, this.windowComponent.getHeight() / 2);
-        }
+//        if (this.windowComponent != null) {
+//            Mouse.setCursorPosition(this.windowComponent.getWidth() / 2, this.windowComponent.getHeight() / 2);
+//        }
+		Mouse.setCursorPosition(Display.getWidth() / 2, Display.getHeight() / 2);
 		Mouse.setGrabbed(false);
 	}
 
