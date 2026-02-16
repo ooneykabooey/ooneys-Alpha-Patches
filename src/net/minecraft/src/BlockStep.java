@@ -56,4 +56,9 @@ public class BlockStep extends Block {
 
 		return var5 == 1 ? true : (!super.shouldSideBeRendered(var1, var2, var3, var4, var5) ? false : (var5 == 0 ? true : var1.getBlockId(var2, var3, var4) != this.blockID));
 	}
+
+
+	public int quantityDropped(Random var1) {
+		return this != Block.stairSingle ? 1 : 2;
+	}
 }

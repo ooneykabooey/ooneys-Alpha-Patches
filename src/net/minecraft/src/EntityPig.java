@@ -44,4 +44,26 @@ public class EntityPig extends EntityAnimal {
 	protected int getDropItemId() {
 		return Item.porkRaw.shiftedIndex;
 	}
+
+	public void onDeath(Entity var1) {
+		if(this.scoreValue > 0 && var1 != null) {
+			var1.addToPlayerScore(this, this.scoreValue);
+		}
+
+		this.dead = true;
+		int var2 = this.getDropItemId();
+		int saddle = Item.saddle.shiftedIndex;
+		if(var2 > 0) {
+			int var3 = this.rand.nextInt(3);
+
+			for(int var4 = 0; var4 < var3; ++var4) {
+				this.dropItem(var2, 1);
+			}
+
+			if (saddled) {
+				this.dropItem(saddle, 1);
+			}
+		}
+
+	}
 }

@@ -11,7 +11,5 @@ public class BlockBookshelf extends Block {
 		return var1 <= 1 ? 4 : this.blockIndexInTexture;
 	}
 
-	public int quantityDropped(Random var1) {
-		return 0;
-	}
+
 }
