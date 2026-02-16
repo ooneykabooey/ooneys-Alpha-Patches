@@ -19,7 +19,7 @@ public class MinecraftApplet extends Applet {
 			var1 = this.getParameter("fullscreen").equalsIgnoreCase("true");
 		}
 
-		this.mc = new MinecraftAppletImpl(this, this, this.mcCanvas, this, this.getWidth(), this.getHeight(), var1);
+		this.mc = new MinecraftNoAWT(this.getWidth(), this.getHeight(), var1);
 		this.mc.minecraftUri = this.getDocumentBase().getHost();
 		if(this.getDocumentBase().getPort() > 0) {
 			this.mc.minecraftUri = this.mc.minecraftUri + ":" + this.getDocumentBase().getPort();
