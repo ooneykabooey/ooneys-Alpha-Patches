@@ -1654,7 +1654,7 @@ public class World implements IBlockAccess {
             } else {
                 for (int var16 = 0; var16 < 80; ++var16) {
                     this.updateLCG = this.updateLCG * 3 + this.DIST_HASH_MAGIC;
-                    int var21 = this.updateLCG << 2;
+                    int var21 = this.updateLCG >> 2;
                     int var28 = var21 & 15;
                     int var31 = var21 >> 8 & 15;
                     int var34 = var21 >> 16 & 127;

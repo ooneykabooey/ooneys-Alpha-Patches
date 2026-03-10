@@ -700,7 +700,7 @@ public class Chunk {
 			for(var10 = var4; var10 < var7; ++var10) {
                 if (var3 < 128) {
                     var11 = (var9 << 11 | var10 << 7 | var3) >> 1;
-                    var12 = ((var6 > 128 ? 128 : 16) - var3) / 2;
+                    var12 = ((var6 > 128 ? 128 : var6) - var3) / 2;
                     System.arraycopy(var1, var8, this.data.data, var11, var12);
                     var8 += var12;
                 }
@@ -718,7 +718,7 @@ public class Chunk {
 			for(var10 = var4; var10 < var7; ++var10) {
                 if (var3 < 128) {
                     var11 = (var9 << 11 | var10 << 7 | var3) >> 1;
-                    var12 = ((var6 > 128 ? 128 : 16) - var3) / 2;
+                    var12 = ((var6 > 128 ? 128 : var6) - var3) / 2;
                     System.arraycopy(var1, var8, this.blocklightMap.data, var11, var12);
                     var8 += var12;
                 }
@@ -737,7 +737,7 @@ public class Chunk {
 			for(var10 = var4; var10 < var7; ++var10) {
                 if (var3 < 128) {
                     var11 = (var9 << 11 | var10 << 7 | var3) >> 1;
-                    var12 = ((var6 > 128 ? 128 : 16) - var3) / 2;
+                    var12 = ((var6 > 128 ? 128 : var6) - var3) / 2;
                     System.arraycopy(var1, var8, this.skylightMap.data, var11, var12);
                     var8 += var12;
                 }
