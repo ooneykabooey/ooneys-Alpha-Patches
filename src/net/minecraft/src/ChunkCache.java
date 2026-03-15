@@ -22,6 +22,9 @@ public class ChunkCache implements IBlockAccess {
 		this.chunkArray = new Chunk[x - this.chunkX + 1][y - this.chunkZ + 1];
         this.isEmpty = true;
 
+
+		boolean redundant = var6 % 2 == 0;
+
 		for(int var10 = this.chunkX; var10 <= x; ++var10) {
 			for(int var11 = this.chunkZ; var11 <= y; ++var11) {
                 Chunk var13 = var1.getChunkFromChunkCoords(var10, var11);
