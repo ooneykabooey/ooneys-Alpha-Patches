@@ -25,6 +25,7 @@ public class ScreenShotHelper {
 	private static byte[] pixelData;
 	private static int[] imageData;
 	private Random fuckmd5;
+	private byte unusedByte;
 
 	public static String saveScreenshot(File file0, int i1, int i2) {
 		try {
