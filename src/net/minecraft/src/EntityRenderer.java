@@ -104,19 +104,16 @@ public class EntityRenderer {
 
 	public float getFOVModifier(float var1) {
 		EntityPlayerSP var2 = this.mc.thePlayer;
-		float var3 = 70.0F;
+		float var3 = this.mc.options.fovOption;
 
 		if(var2.isInsideOfMaterial(Material.water)) {
-			var3 = 60.0F;
+			var3 = var3 - 10;
 		}
 
 		if(var2.health <= 0) {
 			float var4 = (float)var2.deathTime + var1;
 			var3 /= (1.0F - 500.0F / (var4 + 500.0F)) * 2.0F + 1.0F;
 		}
-
-        // Apply fovoffset from scroll wheel
-        var3 += fovScrollOffset;
 
         // When pressing zoom key, zoom in with interpolation.
         if (Keyboard.isKeyDown(this.mc.options.keyBindZoom.keyCode)) {

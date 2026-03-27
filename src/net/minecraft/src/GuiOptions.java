@@ -20,8 +20,8 @@ public class GuiOptions extends GuiScreen {
 			}
 		}
 
-		this.controlList.add(new GuiButton(100, this.width / 2 - 100, this.height / 6 + 120 + 12, "Controls..."));
-		this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, "Done"));
+		this.controlList.add(new GuiButton(100, this.width / 2 - 100, this.height / 6 + 120 + 30, "Controls..."));
+		this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168 + 15, "Done"));
 	}
 
 	protected void actionPerformed(GuiButton var1) {

@@ -850,7 +850,7 @@ public abstract class Minecraft implements Runnable {
 											}
 
 											if(Keyboard.getEventKey() == this.options.keyBindToggleFog.keyCode) {
-												this.options.setOptionValue(4, !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && !Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 : -1);
+												this.options.setOptionValue(5, !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && !Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? 1 : -1);
 											}
 										}
 									}
@@ -862,18 +862,7 @@ public abstract class Minecraft implements Runnable {
 
 						int var3 = Mouse.getEventDWheel();
 						if(var3 != 0) {
-                            if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {// CTRL is held, adjust FOV instead of scrolling
-                                float delta = var3 / 200.0F; // sensitivity
-                                this.entityRenderer.fovScrollOffset += delta;
-
-                                // Limit Range
-                                if (this.entityRenderer.fovScrollOffset > 50.0F) this.entityRenderer.fovScrollOffset = 50.0F;
-                                if (this.entityRenderer.fovScrollOffset < -55.0F) this.entityRenderer.fovScrollOffset = -55.0F;
-                            } else {
-                                // Not holding control, scroll thru items instead
-                                this.thePlayer.inventory.changeCurrentItem(var3);
-
-                            }
+                            this.thePlayer.inventory.changeCurrentItem(var3);
                         }
 
 						if(this.currentScreen == null) {
