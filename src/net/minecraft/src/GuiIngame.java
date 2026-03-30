@@ -6,6 +6,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class GuiIngame extends Gui {
 		this.mc = var1;
 	}
 
-	public void renderGameOverlay(float var1, boolean var2, int var3, int var4) {
+	public void renderGameOverlay(float var1, boolean var2, int var3, int var4, World world) {
         ScaledResolution var5 = new ScaledResolution(this.mc.displayWidth, this.mc.displayHeight);
         int var6 = var5.getScaledWidth();
         int var7 = var5.getScaledHeight();
@@ -177,26 +179,71 @@ public class GuiIngame extends Gui {
             this.drawString(var8, "f: " + (MathHelper.floor_double((double) (this.mc.thePlayer.rotationYaw * 4.0 / 360.F) + 0.50) & 3), 2, 92, 14737632);
             //GL11.glPopMatrix();
         } else {
-            // Test
-            int hour = LocalDateTime.now().getHour();
-            String am_pm = hour <= 12 ? "AM" : "PM"; // Checks if it is morning or afternoon
-            hour = hour > 12 ? hour -= 12 : hour; // If hour is over 12, reset to 1, otherwise remain as hour.
+            StringBuilder topLeftText = new StringBuilder();
+            if (mc.options.showDateTime) {
+                if (!mc.options.shownMCTime) {
+                    // Show Clock (Month, Day, Hour) (NOT 24 HOUR TIME)
+                    int hour = LocalDateTime.now().getHour();
+                    String am_pm = "";
 
-            hour = hour == 0 ? 12 : hour;
+                    // If Not 24 Hour Time
+                    if (!mc.options.clock24Hrtime) {
+                        am_pm = hour <= 12 ? " AM" : " PM"; // Checks if it is morning or afternoon
+                        hour = hour > 12 ? hour -= 12 : hour; // If hour is over 12, reset to 1, otherwise remain as hour.
+                        hour = hour == 0 ? 12 : hour;
+                    }
 
-            int minute = LocalDateTime.now().getMinute();
+                    int minute = LocalDateTime.now().getMinute();
 
-            // If minute is single digit, add leading zero.
-            String minuteText = minute < 10 ? "0" + minute : Integer.toString(minute);
+                    // If minute is single digit, add leading zero.
+                    String minuteText = minute < 10 ? "0" + minute : Integer.toString(minute);
 
-            // Locale is english
-            String month = LocalDateTime.now().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
-            String day = Integer.toString(LocalDateTime.now().getDayOfMonth());
+                    String month = mc.options.clockShowMonth ? LocalDateTime.now().getMonth().getDisplayName(mc.options.clockTruncated ? TextStyle.SHORT : TextStyle.FULL, Locale.ENGLISH) : "";
+                    String day = mc.options.clockShowDay ? Integer.toString(LocalDateTime.now().getDayOfMonth()): "";
+                    String dayOfWeek = mc.options.clockShowDayOfWeek ? LocalDateTime.now().getDayOfWeek().toString(): "";
+                    String year = mc.options.clockShowYear ? Integer.toString(LocalDateTime.now().getYear()) : "";
+                    String time = mc.options.clockShowTime ? hour + ":" + minute + am_pm: "";
 
-            // Combine text
-            String topRightText = month + " " + day + " " + hour + ":" + minuteText + " " + am_pm;
+                    // Leading Capital on dayOfWeek instead of all caps.
+                    if (!dayOfWeek.isEmpty()) {
+                        dayOfWeek = dayOfWeek.charAt(0) + dayOfWeek.substring(1).toLowerCase();
+                    }
 
-            var8.drawStringWithShadow(topRightText, 2, 2, 16777215);
+                    // For Day Of Week
+                    if (mc.options.clockTruncated) {
+                        dayOfWeek = dayOfWeek.substring(0,Math.min(dayOfWeek.length(), 3));
+                    }
+
+
+                    /// Format
+                    // Normal Time disabled if 4.
+                    if (mc.options.clockDateFormat != 4) {
+                        topLeftText.append(dayOfWeek + " ");
+                        if (mc.options.clockDateFormat == 0) { // MDY
+                            topLeftText.append(dateFormat(month, day, year));
+                        } else if (mc.options.clockDateFormat == 1) { // DMY
+                            topLeftText.append(dateFormat(day, month, year));
+                        } else if (mc.options.clockDateFormat == 2) { // YMD
+                            topLeftText.append(dateFormat(year, month, day));
+                        } else if (mc.options.clockDateFormat == 3) { // YDM
+                            topLeftText.append(dateFormat(year, day, month));
+                        }
+                        topLeftText.append(" " + time);
+                    }
+                } else {
+                    if (mc.options.showMcDay) {
+                        topLeftText.append( "Day " + world.Day + " ");
+                    }
+
+                    if (mc.options.showMcDayTimeTicks) {
+                        topLeftText.append(world.worldTime % 24000 + " ");
+                    }
+                }
+            } else {
+                topLeftText.replace(0, topLeftText.capacity(), "Minecraft Alpha v1.1.2_01");
+            }
+
+            var8.drawStringWithShadow(topLeftText.toString(), 2, 2, 16777215);
         }
 
 
@@ -269,6 +316,10 @@ public class GuiIngame extends Gui {
         GL11.glDisable(GL11.GL_BLEND);
     }
 	}
+
+    private String dateFormat(String first, String second, String third) {
+        return first + " " + second + " " + third;
+    }
 
 	private void renderVignette(float var1, int var2, int var3) {
 		var1 = 1.0F - var1;

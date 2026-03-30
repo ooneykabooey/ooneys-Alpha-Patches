@@ -20,6 +20,7 @@ public class GuiOptions extends GuiScreen {
 			}
 		}
 
+
 		this.controlList.add(new GuiButton(100, this.width / 2 - 100, this.height / 6 + 120 + 30, "Controls..."));
 		this.controlList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168 + 15, "Done"));
 	}
@@ -29,6 +30,10 @@ public class GuiOptions extends GuiScreen {
 			if(var1.id < 100) {
 				this.options.setOptionValue(var1.id, 1);
 				var1.displayString = this.options.getOptionDisplayString(var1.id);
+			}
+
+			if (var1.id == 11) {
+				this.mc.displayGuiScreen(new GuiClock(this, this.options));
 			}
 
 			if(var1.id == 100) {

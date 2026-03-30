@@ -33,10 +33,28 @@ public class GameSettings {
 	public KeyBinding[] keyBindings = new KeyBinding[]{this.keyBindForward, this.keyBindLeft, this.keyBindBack, this.keyBindRight, this.keyBindJump, this.keyBindSneak, this.keyBindDrop, this.keyBindInventory, this.keyBindChat, this.keyBindToggleFog, this.keyBindZoom, this.keyBindPerspective};
 	protected Minecraft mc;
 	private File optionsFile;
-	public int numberOfOptions = 11;
+	public int numberOfOptions = 12;
 	public int difficulty = 2;
 	public boolean thirdPersonView = false;
     public boolean thirdPersonFront = false; // false = facing back, true = facing front
+
+	public int numberOfClockOptions = 11;
+	public boolean shownMCTime = false;
+
+	public boolean clockTruncated = true;
+	public boolean clock24Hrtime = false;
+	public static final String[] clockDateFormats = {"MDY", "DMY", "YMD", "YDM", "---"};
+	public int clockDateFormat = 0;
+	public boolean clockShowDayOfWeek = false;
+	public boolean clockShowMonth = true;
+	public boolean clockShowYear = false;
+	public boolean clockShowDay = true;
+	public boolean clockShowTime = true;
+	public boolean showMcDay = false;
+	public boolean showMcDayTimeTicks = false;
+	public boolean showDateTime = true;
+
+
 
 	public GameSettings(Minecraft var1, File var2) {
 		this.mc = var1;
@@ -108,6 +126,95 @@ public class GameSettings {
 			this.mc.renderGlobal.loadRenderers();
 		}
 
+
+
+		// Clock Options
+
+		// Truncate
+		if (var1 == 12) {
+			this.clockTruncated = !this.clockTruncated;
+		}
+
+		// 24 Hr Time
+		if (var1 == 13) {
+			this.clock24Hrtime = !this.clock24Hrtime;
+		}
+
+		// Date Format
+		if (var1 == 14) {
+			if (!this.shownMCTime) {
+				this.clockDateFormat = (this.clockDateFormat == 4) ? 0 : (this.clockDateFormat + 1) & 3;
+			} else {
+				this.clockDateFormat = 4;
+			}
+		}
+
+		// Show Time
+		if (var1 == 15) {
+			if (!this.shownMCTime) {
+				this.clockShowTime = !this.clockShowTime;
+			} else {
+				this.clockShowTime = false;
+			}
+		}
+
+		// Show Day
+		if (var1 == 16) {
+			if (!this.shownMCTime) {
+				this.clockShowDay = !this.clockShowDay;
+			} else {
+				this.clockShowDay = false;
+			}
+		}
+
+
+		// Show Day Of Week
+		if (var1 == 17) {
+			if (!this.shownMCTime) {
+				this.clockShowDayOfWeek = !this.clockShowDayOfWeek;
+			} else {
+				this.clockShowDayOfWeek = false;
+			}
+		}
+
+		// Show Month
+		if (var1 == 18) {
+			if (!this.shownMCTime) {
+				this.clockShowMonth = !this.clockShowMonth;
+			} else {
+				this.clockShowMonth = false;
+			}
+		}
+
+		// Show Year
+		if (var1 == 19) {
+			if (!this.shownMCTime) {
+				this.clockShowYear = !this.clockShowYear;
+			} else {
+				this.clockShowYear = false;
+			}
+		}
+
+		// Show MC Day (falsifies every other metric but Day Time)
+		if (var1 == 20) {
+			if (!this.showMcDayTimeTicks) {
+				this.shownMCTime = !this.shownMCTime;
+			}
+			this.showMcDay = !this.showMcDay;
+		}
+
+		// Show Time in Day (falsifies every other metric but MC Day)
+		if (var1 == 21) {
+			if (!this.showMcDay) {
+				this.shownMCTime = !this.shownMCTime;
+			}
+			this.showMcDayTimeTicks = !this.showMcDayTimeTicks;
+		}
+
+		if (var1 == 22) {
+			this.showDateTime = !this.showDateTime;
+		}
+
 		this.saveOptions();
 	}
 
@@ -119,8 +226,35 @@ public class GameSettings {
 		return var1 == 0 ? this.fovOption : (var1 == 1 ? this.musicVolume : (var1 == 2 ? this.soundVolume : (var1 == 4 ? this.mouseSensitivity : 0.0F)));
 	}
 
+	public String getDateFormat(int var1) {
+		return clockDateFormats[var1];
+	}
+
 	public String getOptionDisplayString(int var1) {
-		return var1 == 0 ? "FOV: " + (this.fovOption > 15.0F ? (int)(this.fovOption) + "°" : "ZOOOOM") : (var1 == 1 ? "Music: " + (this.musicVolume > 0.0F ? (int)(this.musicVolume * 100.0F) + "%" : "OFF") : (var1 == 2 ? "Sound: " + (this.soundVolume > 0.0F ? (int)(this.soundVolume * 100.0F) + "%" : "OFF") : (var1 == 3 ? "Invert mouse: " + (this.invertMouse ? "ON" : "OFF") : (var1 == 4 ? (this.mouseSensitivity == 0.0F ? "Sensitivity: *yawn*" : (this.mouseSensitivity == 1.0F ? "Sensitivity: HYPERSPEED!!!" : "Sensitivity: " + (int)(this.mouseSensitivity * 200.0F) + "%")) : (var1 == 5 ? "Render distance: " + RENDER_DISTANCES[this.renderDistance] : (var1 == 6 ? "View bobbing: " + (this.viewBobbing ? "ON" : "OFF") : (var1 == 7 ? "3d anaglyph: " + (this.anaglyph ? "ON" : "OFF") : (var1 == 8 ? "Limit framerate: " + (this.limitFramerate ? "ON" : "OFF") : (var1 == 9 ? "Difficulty: " + DIFFICULTY_LEVELS[this.difficulty] : (var1 == 10 ? "Graphics: " + (this.fancyGraphics ? "FANCY" : "FAST") : ""))))))))));
+		return var1 == 0 ? "FOV: " + (this.fovOption > 15.0F ? (int)(this.fovOption) + "°" : "ZOOOOM") :
+				(var1 == 1 ? "Music: " + (this.musicVolume > 0.0F ? (int)(this.musicVolume * 100.0F) + "%" : "OFF") :
+						(var1 == 2 ? "Sound: " + (this.soundVolume > 0.0F ? (int)(this.soundVolume * 100.0F) + "%" : "OFF") :
+								(var1 == 3 ? "Invert mouse: " + (this.invertMouse ? "ON" : "OFF") :
+										(var1 == 4 ? (this.mouseSensitivity == 0.0F ? "Sensitivity: *yawn*" : (this.mouseSensitivity == 1.0F ? "Sensitivity: HYPERSPEED!!!" : "Sensitivity: " + (int)(this.mouseSensitivity * 200.0F) + "%")) :
+												(var1 == 5 ? "Render distance: " + RENDER_DISTANCES[this.renderDistance] :
+														(var1 == 6 ? "View bobbing: " + (this.viewBobbing ? "ON" : "OFF") :
+																(var1 == 7 ? "3d anaglyph: " + (this.anaglyph ? "ON" : "OFF") :
+																		(var1 == 8 ? "Limit framerate: " + (this.limitFramerate ? "ON" : "OFF") :
+																				(var1 == 9 ? "Difficulty: " + DIFFICULTY_LEVELS[this.difficulty] :
+																						(var1 == 10 ? "Graphics: " + (this.fancyGraphics ? "FANCY" : "FAST") :
+																								(var1 == 11 ? "Clock Settings..." :
+																										(var1 == 12 ? "Truncate Date: " + (this.clockTruncated ? "YES" : "NO") :
+		(var1 == 13 ? "24 Hour Time: " + (this.clock24Hrtime ? "ON" : "OFF") :
+		(var1 == 14 ? "Date Format: " + getDateFormat(this.clockDateFormat) :
+		(var1 == 15 ? "Show Time: " + (this.clockShowTime ? "YES" : "NO") :
+		(var1 == 16 ? "Show Day: " + (this.clockShowDay ? "YES" : "NO") :
+		(var1 == 17 ? "Show Day Of Week: " + (this.clockShowDayOfWeek ? "YES" : "NO") :
+		(var1 == 18 ? "Show Month: " + (this.clockShowMonth ? "YES" : "NO") :
+		(var1 == 19 ? "Show Year: " + (this.clockShowYear ? "YES" : "NO") :
+		(var1 == 20 ? "Show MC Day: " + (this.showMcDay ? "YES" : "NO") :
+		(var1 == 21 ? "Show MC Time: " + (this.showMcDayTimeTicks ? "YES" : "NO") :
+				(var1 == 22 ? "Show Clock: " + (this.showDateTime ? "ON" : "OFF") : ""
+		))))))))))))))))))))));
 	}
 
 	public void loadOptions() {
@@ -185,6 +319,56 @@ public class GameSettings {
 					this.fancyGraphics = var3[1].equals("true");
 				}
 
+				if (var3[0].equals("clock-show")) {
+					this.showDateTime = var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-truncated")) {
+					this.clockTruncated = var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-military")) {
+					this.clock24Hrtime =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-format")) {
+					this.clockDateFormat = Integer.parseInt(var3[1]);
+				}
+
+				if (var3[0].equals("clock-time")) {
+					this.clockShowTime =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-day")) {
+					this.clockShowDay =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-dayofweek")) {
+					this.clockShowDayOfWeek =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-month")) {
+					this.clockShowMonth =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-year")) {
+					this.clockShowYear =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-mcdata-visible")) {
+					this.shownMCTime =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-mc-days")) {
+					this.showMcDay =  var3[1].equals("true");
+				}
+
+				if (var3[0].equals("clock-mc-time")) {
+					this.showMcDayTimeTicks = var3[1].equals("true");
+				}
+
+
+
 				for(int var4 = 0; var4 < this.keyBindings.length; ++var4) {
 					if(var3[0].equals("key_" + this.keyBindings[var4].keyDescription)) {
 						this.keyBindings[var4].keyCode = Integer.parseInt(var3[1]);
@@ -205,6 +389,7 @@ public class GameSettings {
 	public void saveOptions() {
 		try {
 			PrintWriter var1 = new PrintWriter(new FileWriter(this.optionsFile));
+
             var1.println("fov: " + this.fovOption);
 			var1.println("music:" + this.musicVolume);
 			var1.println("sound:" + this.soundVolume);
@@ -216,6 +401,18 @@ public class GameSettings {
 			var1.println("limitFramerate:" + this.limitFramerate);
 			var1.println("difficulty:" + this.difficulty);
 			var1.println("fancyGraphics:" + this.fancyGraphics);
+			var1.println("clock-show:" + this.showDateTime);
+			var1.println("clock-truncated:"+this.clockTruncated);
+			var1.println("clock-military:"+this.clock24Hrtime);
+			var1.println("clock-format:"+this.clockDateFormat);
+			var1.println("clock-time:"+this.clockShowTime);
+			var1.println("clock-day:"+this.clockShowDay);
+			var1.println("clock-dayofweek:"+this.clockShowDayOfWeek);
+			var1.println("clock-month:"+this.clockShowMonth);
+			var1.println("clock-year:"+this.clockShowYear);
+			var1.println("clock-mcdata-visible:"+this.shownMCTime);
+			var1.println("clock-mc-days:"+this.showMcDay);
+			var1.println("clock-mc-time:"+this.showMcDayTimeTicks);
 
 			for(int var2 = 0; var2 < this.keyBindings.length; ++var2) {
 				var1.println("key_" + this.keyBindings[var2].keyDescription + ":" + this.keyBindings[var2].keyCode);

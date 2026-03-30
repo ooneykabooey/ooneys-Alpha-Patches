@@ -11,6 +11,7 @@ public class World implements IBlockAccess {
 	private Set scheduledTickSet;
 	public List loadedTileEntityList;
 	public long worldTime;
+	public int Day;
 	public boolean snowCovered;
 	private long skyColor;
 	private long fogColor;
@@ -100,6 +101,7 @@ public class World implements IBlockAccess {
 		this.loadedTileEntityList = new ArrayList();
 		this.worldTime = 0L;
 		this.snowCovered = false;
+		this.Day = 0;
 		this.skyColor = 8961023L;
 		this.fogColor = 12638463L;
 		this.cloudColor = 16777215L;
@@ -135,6 +137,7 @@ public class World implements IBlockAccess {
 		this.loadedTileEntityList = new ArrayList();
 		this.worldTime = 0L;
 		this.snowCovered = false;
+		this.Day = 0;
 		this.skyColor = 8961023L;
 		this.fogColor = 12638463L;
 		this.cloudColor = 16777215L;
@@ -188,6 +191,7 @@ public class World implements IBlockAccess {
 				this.worldTime = var7.getLong("Time");
 				this.sizeOnDisk = var7.getLong("SizeOnDisk");
 				this.snowCovered = var7.getBoolean("SnowCovered");
+				this.Day = var7.getInteger("Day");
 				if(var7.hasKey("Player")) {
 					this.nbtCompoundPlayer = var7.getCompoundTag("Player");
 				}
@@ -288,6 +292,7 @@ public class World implements IBlockAccess {
 		var1.setLong("Time", this.worldTime);
 		var1.setLong("SizeOnDisk", this.sizeOnDisk);
 		var1.setBoolean("SnowCovered", this.snowCovered);
+		var1.setInteger("Day", this.Day);
 		var1.setLong("LastPlayed", System.currentTimeMillis());
 		EntityPlayer var2 = null;
 		if(this.playerEntities.size() > 0) {
@@ -1564,6 +1569,14 @@ public class World implements IBlockAccess {
 			this.saveWorld(false, (IProgressUpdate)null);
 		}
 
+		if (this.worldTime % 24000L == 0 && this.Day != 0) {
+			this.Day++;
+		}
+
+		if (this.Day == 0) {
+			this.Day =(int)this.worldTime / 24000;
+		}
+
 		this.tickUpdates(false);
 		this.updateBlocksAndPlayCaveSounds();
 	}
@@ -1977,5 +1990,9 @@ public class World implements IBlockAccess {
 			lightBrightnessTable[var1] = (1.0F - var2) / (var2 * 3.0F + 1.0F) * (1.0F - var0) + var0;
 		}
 
+	}
+
+	private void setDay(int var1) {
+		this.Day = var1;
 	}
 }
