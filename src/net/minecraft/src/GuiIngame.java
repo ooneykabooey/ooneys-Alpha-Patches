@@ -202,7 +202,7 @@ public class GuiIngame extends Gui {
                     String day = mc.options.clockShowDay ? Integer.toString(LocalDateTime.now().getDayOfMonth()): "";
                     String dayOfWeek = mc.options.clockShowDayOfWeek ? LocalDateTime.now().getDayOfWeek().toString(): "";
                     String year = mc.options.clockShowYear ? Integer.toString(LocalDateTime.now().getYear()) : "";
-                    String time = mc.options.clockShowTime ? hour + ":" + minute + am_pm: "";
+                    String time = mc.options.clockShowTime ? hour + ":" + minuteText + am_pm: "";
 
                     // Leading Capital on dayOfWeek instead of all caps.
                     if (!dayOfWeek.isEmpty()) {
