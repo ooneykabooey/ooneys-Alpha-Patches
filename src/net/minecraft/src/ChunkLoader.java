@@ -10,6 +10,7 @@ import java.util.Iterator;
 public class ChunkLoader implements IChunkLoader {
 	private File saveDir;
 	private boolean createIfNecessary;
+	private byte unusedByte;
 
 	public ChunkLoader(File var1, boolean var2) {
 		this.saveDir = var1;

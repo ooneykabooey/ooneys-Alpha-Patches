@@ -59,6 +59,6 @@ public class BlockStep extends Block {
 
 
 	public int quantityDropped(Random var1) {
-		return this != Block.stairSingle ? 1 : 2;
+		return this == Block.stairSingle ? 1 : 2;
 	}
 }

@@ -11,7 +11,9 @@ public class ItemDoor extends Item {
 	}
 
 	public boolean onItemUse(ItemStack var1, EntityPlayer var2, World var3, int var4, int var5, int var6, int var7) {
+		System.out.println("ItemDoor.onItemUse");
 		if(var7 != 1) {
+			System.out.println("ItemDoor.var7!=-1");
 			return false;
 		} else {
 			++var5;
@@ -23,6 +25,7 @@ public class ItemDoor extends Item {
 			}
 
 			if(!var8.canPlaceBlockAt(var3, var4, var5, var6)) {
+				System.out.println("Flagged placement.");
 				return false;
 			} else {
 				int var9 = MathHelper.floor_double((double)((var2.rotationYaw + 180.0F) * 4.0F / 360.0F) - 0.5D) & 3;
