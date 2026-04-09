@@ -3,6 +3,9 @@ package net.minecraft.src;
 import java.util.Random;
 
 public class BlockDoor extends Block {
+
+	private byte unused;
+
 	protected BlockDoor(int var1, Material var2) {
 		super(var1, var2);
 		this.blockIndexInTexture = 97;

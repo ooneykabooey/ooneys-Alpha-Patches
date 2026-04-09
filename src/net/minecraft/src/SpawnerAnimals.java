@@ -10,6 +10,7 @@ public class SpawnerAnimals {
 	private Class entityType;
 	private Class[] entities;
 	private Set eligibleChunksForSpawning = new HashSet();
+	private byte unusedbyte;
 
 	public SpawnerAnimals(int var1, Class var2, Class[] var3) {
 		this.maxSpawns = var1;
