@@ -1085,8 +1085,13 @@ public class RenderGlobal implements IWorldAccess {
 	}
 
 	public void obtainEntitySkin(Entity var1) {
+		var1.updateCloak();
 		if(var1.skinUrl != null) {
 			this.renderEngine.obtainImageData(var1.skinUrl, new ImageBufferDownload());
+		}
+
+		if(var1.cloakUrl != null) {
+			this.renderEngine.obtainImageData(var1.cloakUrl, new ImageBufferDownload());
 		}
 
 	}

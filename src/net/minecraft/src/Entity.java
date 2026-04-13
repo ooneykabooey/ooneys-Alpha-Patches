@@ -57,6 +57,7 @@ public abstract class Entity {
 	public int air = 300;
 	private boolean firstUpdate = true;
 	public String skinUrl;
+	public String cloakUrl;
 	private double entityRiderPitchDelta;
 	private double entityRiderYawDelta;
 	public boolean addedToChunk = false;
@@ -836,4 +837,9 @@ public abstract class Entity {
 		this.setPosition(var1, var3, var5);
 		this.setRotation(var7, var8);
 	}
+
+
+	public void updateCloak() {
+	}
+
 }

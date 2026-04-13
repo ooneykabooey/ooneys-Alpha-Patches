@@ -16,9 +16,15 @@ public abstract class Render {
 		var2.bindTexture(var2.getTexture(var1));
 	}
 
-	protected void loadDownloadableImageTexture(String var1, String var2) {
+	protected boolean loadDownloadableImageTexture(String var1, String var2) {
 		RenderEngine var3 = this.renderManager.renderEngine;
-		var3.bindTexture(var3.getTextureForDownloadableImage(var1, var2));
+		int var4 = var3.getTextureForDownloadableImage(var1, var2);
+		if(var4 >= 0) {
+			var3.bindTexture(var4);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private void renderEntityOnFire(Entity var1, double var2, double var4, double var6, float var8) {

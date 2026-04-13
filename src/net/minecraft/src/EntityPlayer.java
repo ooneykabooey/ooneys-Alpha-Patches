@@ -12,6 +12,14 @@ public class EntityPlayer extends EntityLiving {
 	public int swingProgressInt = 0;
 	public String username;
 	private int damageRemainder = 0;
+	public String playerCloakUrl;
+	public double field_20066_r;
+	public double field_20065_s;
+	public double field_20064_t;
+	public double field_20063_u;
+	public double field_20062_v;
+	public double field_20061_w;
+
 
 	public EntityPlayer(World var1) {
 		super(var1);
@@ -85,6 +93,40 @@ public class EntityPlayer extends EntityLiving {
 			}
 		}
 
+		this.field_20066_r = this.field_20063_u;
+		this.field_20065_s = this.field_20062_v;
+		this.field_20064_t = this.field_20061_w;
+		double var4 = this.posX - this.field_20063_u;
+		double var3 = this.posY - this.field_20062_v;
+		double var5 = this.posZ - this.field_20061_w;
+		double var7 = 10.0D;
+		if(var4 > var7) {
+			this.field_20066_r = this.field_20063_u = this.posX;
+		}
+
+		if(var5 > var7) {
+			this.field_20064_t = this.field_20061_w = this.posZ;
+		}
+
+		if(var3 > var7) {
+			this.field_20065_s = this.field_20062_v = this.posY;
+		}
+
+		if(var4 < -var7) {
+			this.field_20066_r = this.field_20063_u = this.posX;
+		}
+
+		if(var5 < -var7) {
+			this.field_20064_t = this.field_20061_w = this.posZ;
+		}
+
+		if(var3 < -var7) {
+			this.field_20065_s = this.field_20062_v = this.posY;
+		}
+
+		this.field_20063_u += var4 * 0.25D;
+		this.field_20061_w += var5 * 0.25D;
+		this.field_20062_v += var3 * 0.25D;
 	}
 
 	private void collideWithPlayer(Entity var1) {
@@ -250,5 +292,10 @@ public class EntityPlayer extends EntityLiving {
 	public void swingItem() {
 		this.swingProgressInt = -1;
 		this.isSwinging = true;
+	}
+
+	public void updateCloak() {
+		this.playerCloakUrl = "http://s3.amazonaws.com/MinecraftCloaks/" + this.username + ".png";
+		this.cloakUrl = this.playerCloakUrl;
 	}
 }
